@@ -79,6 +79,7 @@ errorTypes?: { name: string; initializer: (query: Query) => TError}
 
 ## React Query의 주요 옵션들에 대한 이해
 ## React Query의 전반적인 아키텍처와 데이터 흐름에 대한 이해
+![React Query Architecture]('../../../images/23-07-30-react-query-architecture.png')
 
 https://dreamcode.tistory.com/440  
 https://sanoo.dev/react-query  
