@@ -1,11 +1,12 @@
 ---
-layout: post
 title: "TypeScript 프로젝트 세팅"
-description: 
-date: 2023-08-03
-feature_image: 
-tags: [TypeScript]
+categories:
+    - TypeScript
+last_modified_at: 2023-08-03
+tags:
+    - TypeScript
 ---
+
 > [NomadCoders의 <타입스크립트로 블록체인 만들기>](https://nomadcoders.co/typescript-for-beginners/) 수업을 참고하여 작성하였습니다.
 
 VSCode를 사용하고 TypeScript를 이미 설치한 경우,
