@@ -8,7 +8,7 @@ sidebar:
     nav: "docs"
 ---
 
-{% assign posts = site.categories['algorithm-programmers'] %}
+{% assign posts = site.categories.algorithm-programmers %}
 {% for post in posts %}
 {% include archive-single.html type=page.entries_layout %}
 {% endfor %}
