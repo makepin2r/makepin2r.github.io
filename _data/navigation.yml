@@ -14,20 +14,20 @@ docs:
     - title: 기록
       children:
           - title: "TIL"
-            url: til/
+            url: /til
             category: "til"
           - title: "WIL"
-            url: wil/
+            url: /wil
             category: "wil"
     - title: Projects
       children:
           - title: "동네마실"
-            url: project-dongnemashil/
+            url: /project-dongnemashil
             category: "project-dongnemashil"
     - title: Frontend
       children:
           - title: "JavaScript"
-            url: js/
+            url: /js
             category: "js"
           - title: "TypeScript"
             url: ts/
@@ -35,13 +35,13 @@ docs:
     - title: CS
       children:
           - title: "HTTP"
-            url: http/
+            url: /http
             category: "http"
     - title: 알고리즘
       children:
           - title: "프로그래머스"
-            url: algorithm-programmers/
+            url: /algorithm-programmers
             category: "algorithm-programmers"
           - title: "알고리즘 & 자료구조"
-            url: algorithm/
+            url: /algorithm
             category: "algorithm"

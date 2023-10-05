@@ -1,6 +1,6 @@
 ---
 layout: archive
-permalink: algorithm-programmers
+permalink: /algorithm-programmers
 title: "프로그래머스 알고리즘 풀이"
 
 author_profile: true
