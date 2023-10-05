@@ -1,6 +1,6 @@
 ---
 layout: archive
-permalink: til
+permalink: til/
 title: "Today I Learned"
 
 author_profile: true
