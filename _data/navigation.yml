@@ -30,10 +30,10 @@ docs:
             url: /js
             category: "js"
           - title: "TypeScript"
-            url: ts/
+            url: /ts
             category: "ts"
           - title: "Vue"
-            url: vue/
+            url: /vue
             category: "vue"
     - title: CS
       children:
