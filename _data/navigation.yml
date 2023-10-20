@@ -32,6 +32,9 @@ docs:
           - title: "TypeScript"
             url: ts/
             category: "ts"
+          - title: "Vue"
+            url: vue/
+            category: "vue"
     - title: CS
       children:
           - title: "HTTP"
