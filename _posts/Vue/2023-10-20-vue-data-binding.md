@@ -22,7 +22,7 @@ vue에서 데이터나 JS 표현식을 삽입할 때는 크게 두 가지 방식
 > {{ var a = 1 }}
 > 
 > <!-- 흐름 제어도 작동하지 않습니다. 삼항 표현식을 사용하십시오. -->
-> {{ if (ok) { return message } }}
+> //{{ if (ok) { return message } }}
 > ```
 > (출처: [Vue 공식 한국어 문서](https://ko.vuejs.org/guide/essentials/template-syntax.html#directives))
 
