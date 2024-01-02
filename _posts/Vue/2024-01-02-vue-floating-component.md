@@ -147,4 +147,5 @@ onBeforeUnmount(() => {
 }
 </style>
 ```
+(참고로 위에서 handleScroll을 감싼 debouncedScrollEvent는 스크롤 이벤트에 디바운싱을 적용하기 위해 기존에 작성된 debounce 유틸로 함수를 감싼 것이다.)
 
