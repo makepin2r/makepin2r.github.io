@@ -1,5 +1,5 @@
 ---
-title: "Window.getComputeStyle이란?"
+title: "Window.getComputedStyle이란?"
 last_modified_at: 2024-01-02
 categories:
     - js
