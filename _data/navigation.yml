@@ -35,6 +35,9 @@ docs:
           - title: "Vue"
             url: /vue
             category: "vue"
+          - title: "Python"
+            url: /python
+            category: "python"
     - title: CS
       children:
           - title: "HTTP"
