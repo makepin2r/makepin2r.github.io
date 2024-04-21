@@ -19,11 +19,11 @@ docs:
           - title: "WIL"
             url: /wil
             category: "wil"
-    - title: Projects
-      children:
-          - title: "동네마실"
-            url: /project-dongnemashil
-            category: "project-dongnemashil"
+    # - title: Projects
+    #   children:
+    #       - title: "동네마실"
+    #         url: /project-dongnemashil
+    #         category: "project-dongnemashil"
     - title: Frontend
       children:
           - title: "JavaScript"
@@ -35,6 +35,10 @@ docs:
           - title: "Vue"
             url: /vue
             category: "vue"
+          - title: "Python"
+            url: /python
+            category: "python"
+    - title: Data Science
           - title: "Python"
             url: /python
             category: "python"
