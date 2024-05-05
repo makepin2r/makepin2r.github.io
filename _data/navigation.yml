@@ -36,6 +36,7 @@ docs:
             url: /vue
             category: "vue"
     - title: Data Science
+      children:
           - title: "Python"
             url: /python
             category: "python"
