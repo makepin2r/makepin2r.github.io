@@ -103,9 +103,9 @@ analytics:
 
 # Site Author
 author:
-    name: "프론트엔드 개발자 T"
+    name: "makepin2r"
     avatar: "/assets/images/bio-photo.jpg"
-    bio: "JS와 차돌짬뽕에 진심입니다."
+    # bio: "JS와 차돌짬뽕에 진심입니다."
     location: "South Korea"
     email:
     links:
