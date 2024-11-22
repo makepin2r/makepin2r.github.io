@@ -16,11 +16,11 @@ minimal_mistakes_skin: "dark" # "air", "aqua", "contrast", "dark", "dirt", "neon
 
 # Site Settings
 locale: "ko-KR"
-title: "지나가는 프론트엔드 개발자 T"
+title: "일어나... 개발해야지"
 title_separator: "-"
 subtitle: # site tagline that appears below site title in masthead
-name: "프론트엔드 개발자 T"
-description: "JS와 차돌짬뽕에 진심입니다."
+name: "makepin2r"
+# description: "JS와 차돌짬뽕에 진심입니다."
 url: "https://makepin2r.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl: # the subpath of your site, e.g. "/blog"
 repository: # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
