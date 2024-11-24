@@ -15,6 +15,8 @@
   --gray-100: #e0e0e0;
 
   --primary-500: #ed7b58;
+  --primary-300: #f8bdab;
+  --primary-100: #fcd8ce;
 }
 
 @media (prefers-color-scheme: dark) {
