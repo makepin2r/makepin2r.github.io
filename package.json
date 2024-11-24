@@ -10,10 +10,10 @@
     "lint:fix": "eslint --fix ./src",
     "format": "prettier --check --ignore-path .gitignore .",
     "format:fix": "prettier --write --ignore-path .gitignore .",
-    "preexport": "rimraf out",
+    "preexport": "rm -rf out",
     "export": "next export",
-    "touch": "touch out/.nojekyll",
-    "posttouch": "touch out/_next/.nojekyll",
+    "touch": "touch out /.nojekyll",
+    "posttouch": "touch out /_next/.nojekyll"
   },
   "dependencies": {
     "gh-pages": "^6.2.0",
