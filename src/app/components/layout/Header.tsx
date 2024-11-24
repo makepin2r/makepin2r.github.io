@@ -22,6 +22,7 @@ const Header = () => {
           {menus.map(menu => {
             return (
               <NavLink
+                key={menu.name}
                 href={menu.route}
                 className="text-gray-300"
                 activeClassName="text-primary-500"

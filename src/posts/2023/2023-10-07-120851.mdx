@@ -1,0 +1,35 @@
+---
+title: "프로그래머스 숨어있는 숫자의 덧셈 (1) 자바스크립트 알고리즘 풀이"
+last_modified_at: 2023-10-07
+categories:
+    - algorithm-programmers
+tags:
+    - algorithm
+    - JS
+    - programmers
+---
+## 문제
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120851?language=javascript)  
+![image](https://github.com/makepin2r/TIL/assets/39889583/91bf80a0-67e9-427f-82a7-9d5dd45535f3)
+
+## 나의 풀이
+### 아이디어
+-  주어진 문자열을 배열로 전개한 다음, `reduce` 메서드를 통해 순회힌다.
+-  현재의 문자를 숫자로 형변환해 더한다. 만일 숫자가 아니라면 falsy 값인 NaN이 반환되므로 이때는 0으로 예외처리한다.
+### 코드
+```javascript
+function solution(my_string) {
+    return [...my_string].reduce((total, v) => total + (Number(v) || 0), 0);
+}
+```
+
+## 다른 사람 풀이
+```javascript
+function solution(my_string) {
+    const answer = my_string.replace(/[^0-9]/g, '')
+                            .split('')
+                            .reduce((acc, curr) => acc + Number(curr), 0);
+    return answer;
+}
+```
+정규식을 이용해 숫자에 해당하는 부분만 걸러내어 더한 풀이
