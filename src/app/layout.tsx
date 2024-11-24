@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Header from "./components/layout/Header";
+import Footer from "./components/layout/Footer";
 
 const pretendard = localFont({
-  src: './fonts/PretendardVariable.woff2',
-  display: 'swap',
-  weight: '45 920',
-  variable: '--font-pretendard',
-})
-
+  src: "./fonts/PretendardVariable.woff2",
+  display: "swap",
+  weight: "45 920",
+  variable: "--font-pretendard",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,10 +23,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${pretendard.className}`}
-      >
-        {children}
+      <body className={`${pretendard.className}`}>
+        <Header />
+        <main className="w-full max-w-[960px] mx-auto px-4 py-5 min-h-[calc(100vh-190px)]">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
