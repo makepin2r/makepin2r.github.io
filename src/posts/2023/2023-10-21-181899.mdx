@@ -1,0 +1,35 @@
+---
+title: "프로그래머스 카운트 다운 자바스크립트 알고리즘 풀이"
+last_modified_at: 2023-10-21
+categories:
+    - algorithm-programmers
+tags:
+    - algorithm
+    - JS
+    - programmers
+---
+
+## 문제
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181899)  
+![image](https://github.com/makepin2r/TIL/assets/39889583/ebb1018e-2528-49c6-a7f8-b1c8d0bd1d30)
+
+## 나의 풀이
+### 코드
+```javascript
+function solution(start, end_num) {
+    return Array(start - end_num + 1).fill(start).map((v, i) => v - i);
+}
+```
+
+## 다른 사람 풀이
+```javascript
+function solution(start, end) {
+    var answer = [];
+    do {
+        answer.push(start);
+        start--;
+    } while(start >= end)
+    return answer;
+}
+```
+do while문을 이용한 풀이.

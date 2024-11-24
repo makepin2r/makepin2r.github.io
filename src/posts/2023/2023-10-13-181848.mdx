@@ -1,0 +1,35 @@
+---
+title: "프로그래머스 특정한 문자를 대문자로 바꾸기 자바스크립트 알고리즘 풀이"
+last_modified_at: 2023-10-13
+categories:
+    - algorithm-programmers
+tags:
+    - algorithm
+    - JS
+    - programmers
+---
+
+## 문제
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181848)  
+![image](https://github.com/makepin2r/TIL/assets/39889583/12fbccce-4a94-4fec-ab55-1de0b25b9a35)
+
+## 나의 풀이
+### 코드
+```javascript
+function solution(n_str) {
+    return Number(n_str);
+}
+```
+
+## 다른 사람 풀이
+```javascript
+const solution = Number
+```
+띠용... 함수에 Number 생성자 함수 바로 넣어버리기...  
+  
+```javascript
+function solution(n_str) {
+    return +n_str;
+}
+```
+`+` 단항 연산자를 이용해 숫자로 변환한 풀이이다.

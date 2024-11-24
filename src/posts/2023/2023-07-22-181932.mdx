@@ -1,0 +1,85 @@
+---
+title: "프로그래머스 코드 처리하기 자바스크립트 알고리즘 풀이"
+last_modified_at: 2023-07-22
+categories:
+    - algorithm-programmers
+tags:
+    - algorithm
+    - JS
+    - programmers
+---
+
+## 문제
+
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181932#)  
+![image](https://github.com/Kkan-bu/Kkan-bu/assets/39889583/e70fe197-4c98-4b16-a357-f2e93f74fb60)
+
+## 아이디어
+
+-   mode의 값과 짝수/홀수를 2로 나눴을 때의 나머지값이 같다.
+-   그러므로 (인덱스 % 2) 가 mode와 일치하면 해당 인덱스의 값을 더해준다.
+
+## 내 코드
+
+```javascript
+function solution(code) {
+    let ret = "";
+    let mode = 0;
+
+    for (let i = 0; i < code.length; ++i) {
+        if (code[i] === "1") {
+            mode = mode ^ 1; // XOR 연산자로 토글
+            continue; // "1" 문자 자체는 패스
+        }
+        // mode === 0 일 때 짝수 인덱스 문자 추가
+        // mode === 1 일 때 홀수 인덱스 문자 추가
+        // 인덱스의 나머지값과 mode가 일치할 때의 문자만 추가해줌
+        i % 2 === mode && (ret += code[i]);
+    }
+
+    return ret.length === 0 ? "EMPTY" : ret;
+}
+```
+
+## 다른 사람 코드
+
+```javascript
+function solution(code) {
+    let ret = "";
+    let mode = 0;
+    [...code].forEach((char, i) => {
+        if (char === "1") {
+            mode = Math.abs(mode - 1);
+            return;
+        }
+        ret += i % 2 === mode ? char : "";
+    });
+
+    return ret.length === 0 ? "EMPTY" : ret;
+}
+```
+
+0과 1을 토글할 수 있는 아주 신박한 방법이다.  
+`Math.abs()`를 이용해 절대값으로 0과 1을 번갈아가며 구했다.
+
+## 문법 정리
+
+### `^`(XOR) 연산자
+
+문제를 풀며 XOR 연산자가 떠올라 사용하긴 했지만 이 연산자에 대한 개념을 정확히 알진 못했다.  
+비트 연산의 일종이며 토글/반전할 때 사용할 수 있다는 아주 결과적인 지식만 있었다.
+이번에 알아보니,  
+[배운내용~~~~~~~~~~~~~~~~]  
+[링크도 넣기~~~~~~~~~~~~~~~~]
+
+### 연산자의 순서
+
+이번에 다양한 논리, 산술 연산자를 섞어 사용하다보니 중간에 순서 오류가 나기도 했어서, 다시 한 번 정리해보았다.  
+[링크도 넣기~~~~~~~~~~~~~~~~]
+
+### foreach문과 continue
+
+다른 분의 코드를 보다가 알게 되었다.  
+**foreach문에서는 continue를 사용할 수 없다.**  
+보통 foreach 문에서 `continue`와 같은 사용을 원한다면 그냥 `return;`을 사용한다.  
+정확히 왜 foreach문에서 continue의 사용이 막혀있는지에 대해 알아보고 싶었으나 공식 문서에서는 아직 찾지 못했다.

@@ -1,0 +1,38 @@
+---
+title: "프로그래머스 가위 바위 보 자바스크립트 알고리즘 풀이"
+last_modified_at: 2023-10-31
+categories:
+    - algorithm-programmers
+tags:
+    - algorithm
+    - JS
+    - programmers
+---
+
+## 문제
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120839)  
+![image](https://github.com/makepin2r/TIL/assets/39889583/34c7a25b-ab8e-4912-8279-5e13e0e84f65)
+
+## 나의 풀이
+### 코드
+```javascript
+function solution(rsp) {
+    return [...rsp].map(v => v === "2" ? 0 : v === "0" ? 5 : 2).join("");
+}
+```
+
+## 다른 사람 풀이
+```javascript
+function solution(rsp) {
+    let arr = {
+        2: 0,
+        0: 5,
+        5: 2
+    };
+    var answer = [...rsp].map(v => arr[v]).join("");
+    return answer;
+}
+```
+객체를 활용한 풀이이다.  
+각각 대응하는 고정된 값이 있으므로 객체의 key - value 조합을 활용해 풀 수 있다.  
+앞으로 페어로 값을 대응할 수 있는 형태의 문제가 나오면 활용할 수 있을 것 같다.  
