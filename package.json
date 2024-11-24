@@ -11,7 +11,7 @@
     "format": "prettier --check --ignore-path .gitignore .",
     "format:fix": "prettier --write --ignore-path .gitignore .",
     "preexport": "rm -rf out",
-    "touch": "touch out /.nojekyll",
+    "touch": "rm -rf /.nojekyll && touch out /.nojekyll",
     "posttouch": "touch out /_next/.nojekyll"
   },
   "dependencies": {
