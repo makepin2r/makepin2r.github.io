@@ -9,7 +9,7 @@ interface PostListProps {
 const PostList: React.FC<PostListProps> = async ({ category }) => {
   const postList = await getPostList(category);
   return (
-    <div>
+    <div className="grid gap-x-4 gap-y-4 grid-cols-1 md:grid-cols-2">
       {postList.map((post, i) => (
         <FeedCard key={i} feed={post} />
       ))}
