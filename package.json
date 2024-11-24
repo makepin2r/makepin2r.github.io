@@ -11,8 +11,8 @@
     "format": "prettier --check --ignore-path .gitignore .",
     "format:fix": "prettier --write --ignore-path .gitignore .",
     "preexport": "rm -rf out",
-    "touch": "rm -rf /.nojekyll && touch out /.nojekyll",
-    "posttouch": "touch out /_next/.nojekyll"
+    "touch": "sudo touch out /.nojekyll",
+    "posttouch": "sudo touch out /_next/.nojekyll"
   },
   "dependencies": {
     "gh-pages": "^6.2.0",
