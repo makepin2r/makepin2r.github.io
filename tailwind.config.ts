@@ -20,6 +20,8 @@ export default {
         },
         primary: {
           500: "var(--primary-500)",
+          300: "var(--primary-300)",
+          100: "var(--primary-100)",
         },
         black: "var(--black)",
         white: "var(--white)",
@@ -193,5 +195,15 @@ export default {
       },
     },
   },
-  plugins: [typography],
+  plugins: [
+    typography,
+    ({ addUtilities }: { addUtilities: any }) => {
+      const newUtilities = {
+        "shadow-sm": {
+          "box-shadow": "0 0 11px rgba(33,33,33,.2)",
+        },
+      };
+      addUtilities(newUtilities, ["responsive", "hover"]);
+    },
+  ],
 } satisfies Config;
