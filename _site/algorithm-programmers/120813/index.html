@@ -1,0 +1,734 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>프로그래머스 짝수는 싫어요 자바스크립트 알고리즘 풀이 - 일어나… 개발해야지</title>
+<meta name="description" content="문제 문제 링크">
+
+
+  <meta name="author" content="makepin2r">
+  
+  <meta property="article:author" content="makepin2r">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="일어나... 개발해야지">
+<meta property="og:title" content="프로그래머스 짝수는 싫어요 자바스크립트 알고리즘 풀이">
+<meta property="og:url" content="http://localhost:4000/algorithm-programmers/120813/">
+
+
+  <meta property="og:description" content="문제 문제 링크">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2023-10-07T00:00:00+09:00">
+
+
+
+  <meta property="article:modified_time" content="2023-10-07T00:00:00+09:00">
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/algorithm-programmers/120813/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "makepin2r",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="일어나... 개발해야지 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          일어나... 개발해야지
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/bio-photo.jpg" alt="makepin2r" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">makepin2r</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">South Korea</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:makepin2r@gmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/makepin2r" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <li> 총 90개의 게시글 </li>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">기록</span>
+        
+
+        
+        <ul>
+          
+          
+          
+          
+          
+
+            <li><a href="/til">TIL (20)</a></li>
+          
+          
+          
+          
+          
+
+            <li><a href="/wil">WIL (0)</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Frontend</span>
+        
+
+        
+        <ul>
+          
+          
+          
+          
+          
+
+            <li><a href="/js">JavaScript (3)</a></li>
+          
+          
+          
+          
+          
+
+            <li><a href="/ts">TypeScript (0)</a></li>
+          
+          
+          
+          
+          
+
+            <li><a href="/vue">Vue (7)</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Data Science</span>
+        
+
+        
+        <ul>
+          
+          
+          
+          
+          
+
+            <li><a href="/python">Python (1)</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">CS</span>
+        
+
+        
+        <ul>
+          
+          
+          
+          
+          
+
+            <li><a href="/http">HTTP (0)</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">알고리즘</span>
+        
+
+        
+        <ul>
+          
+          
+          
+          
+          
+
+            <li><a href="/algorithm-programmers">프로그래머스 (49)</a></li>
+          
+          
+          
+          
+          
+
+            <li><a href="/algorithm">알고리즘 & 자료구조 (0)</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">재미있는 것들</span>
+        
+
+        
+        <ul>
+          
+          
+          
+          
+          
+
+            <li><a href="/tips">꿀팁 (1)</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="프로그래머스 짝수는 싫어요 자바스크립트 알고리즘 풀이">
+    <meta itemprop="description" content="문제문제 링크">
+    <meta itemprop="datePublished" content="2023-10-07T00:00:00+09:00">
+    <meta itemprop="dateModified" content="2023-10-07T00:00:00+09:00">
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/algorithm-programmers/120813/" class="u-url" itemprop="url">프로그래머스 짝수는 싫어요 자바스크립트 알고리즘 풀이
+</a>
+          </h1>
+          
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <h2 id="문제">문제</h2>
+<p><a href="https://school.programmers.co.kr/learn/courses/30/lessons/1208513">문제 링크</a><br />
+<img src="https://github.com/makepin2r/TIL/assets/39889583/130bd343-54c0-4aba-a489-b653970a13e1" alt="image" /></p>
+
+<h2 id="나의-풀이">나의 풀이</h2>
+<h3 id="아이디어">아이디어</h3>
+<ul>
+  <li>1부터 반복문을 돌며 새로운 배열에 숫자를 넣어준다. (숫자는 2씩 증가하여 1, 3, 5… 식으로 들어갈 것이다.)</li>
+  <li>반복문의 종료 조건은 숫자가 n보다 작거나 같을 때이다.
+    <h3 id="코드">코드</h3>
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">solution</span><span class="p">(</span><span class="nx">my_string</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">[...</span><span class="nx">my_string</span><span class="p">].</span><span class="nf">reduce</span><span class="p">((</span><span class="nx">total</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">total</span> <span class="o">+</span> <span class="p">(</span><span class="nc">Number</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">||</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="다른-사람-풀이">다른 사람 풀이</h2>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">solution</span><span class="p">(</span><span class="nx">my_string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">answer</span> <span class="o">=</span> <span class="nx">my_string</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[^</span><span class="sr">0-9</span><span class="se">]</span><span class="sr">/g</span><span class="p">,</span> <span class="dl">''</span><span class="p">)</span>
+                            <span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="dl">''</span><span class="p">)</span>
+                            <span class="p">.</span><span class="nf">reduce</span><span class="p">((</span><span class="nx">acc</span><span class="p">,</span> <span class="nx">curr</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">acc</span> <span class="o">+</span> <span class="nc">Number</span><span class="p">(</span><span class="nx">curr</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">answer</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>정규식을 이용해 숫자에 해당하는 부분만 걸러내어 더한 풀이</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#algorithm" class="page__taxonomy-item p-category" rel="tag">algorithm</a><span class="sep">, </span>
+    
+      <a href="/tags/#js" class="page__taxonomy-item p-category" rel="tag">JS</a><span class="sep">, </span>
+    
+      <a href="/tags/#programmers" class="page__taxonomy-item p-category" rel="tag">programmers</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#algorithm-programmers" class="page__taxonomy-item p-category" rel="tag">algorithm-programmers</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2023-10-07">October 7, 2023</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4+%EC%A7%9D%EC%88%98%EB%8A%94+%EC%8B%AB%EC%96%B4%EC%9A%94+%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8+%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98+%ED%92%80%EC%9D%B4%20http%3A%2F%2Flocalhost%3A4000%2Falgorithm-programmers%2F120813%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Falgorithm-programmers%2F120813%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Falgorithm-programmers%2F120813%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/til/TIL-231007/" class="pagination--pager" title="2023-10-07 TIL
+">이전</a>
+    
+    
+      <a href="/algorithm-programmers/120851/" class="pagination--pager" title="프로그래머스 숨어있는 숫자의 덧셈 (1) 자바스크립트 알고리즘 풀이
+">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/vue/nuxt-tiptap/" rel="permalink">자유로운 커스텀 에디터를 만들어보자 : TipTap 도입기 (Nuxt 3)
+</a>
+      
+    </h2>
+    
+
+
+    <p class="archive__item-excerpt" itemprop="description">Toast Editor… 안녕
+회사에서 커뮤니티 게시판 기능을 개선하는 프로젝트에서, 에디터를 전면 수정하게 되었다.
+기존에는 Toast 에디터를 이용해 정석적인 형태의 UI만 제공하고 있었다.
+(블로그 글쓰기 화면같이 상단에 툴바가 있는 모양이었다.)
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/python/python-poetry-version/" rel="permalink">poetry에서 파이썬 버전 관련 에러 해결하기 (The current project’s supported Python range…)
+</a>
+      
+    </h2>
+    
+
+
+    <p class="archive__item-excerpt" itemprop="description">파이썬을 학습하며 다양한 버전을 사용해야 해서, pyenv와 poetry를 이용하고 있다.
+pyenv는 여러 파이썬 버전을 관리 및 변경해 사용할 수 있도록 도와주는 version management 라이브러리이며,
+poetry는 가상환경 및 파이썬 패키지 매니징 기능을 제공하는 ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/vue/vue-floating-component/" rel="permalink">Vue UI 컴포넌트: 상하 스크롤을 따라다니는 플로팅 컴포넌트 만들기 (추가 라이브러리 X)
+</a>
+      
+    </h2>
+    
+
+
+    <p class="archive__item-excerpt" itemprop="description">플로팅 컴포넌트 만들기
+상하 스크롤을 쫓아오는 플로팅 메뉴를 만들어야 했다.
+해당 기능을 또 쓸 일이 있을 것 같아, 플로팅 기능만 유틸처럼 떼놓은 형태의 컴포넌트를 만들기로 결정했다.
+현재는 위치를 디테일하게 정하는 기능 없이, 일단 스크롤을 따라다니는 기능만 만들어본다.
+(Vu...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/js/js-window-getcomputedstyle/" rel="permalink">Window.getComputedStyle이란?
+</a>
+      
+    </h2>
+    
+
+
+    <p class="archive__item-excerpt" itemprop="description">Window.getComputedStyle()
+브라우저에 그려진 엘리먼트의 스타일을 객체로 반환해주는 메서드이다.
+
+  Window.getComputedStyle() 메소드는 인자로 전달받은 요소의 모든 CSS 속성값을 담은 객체를 회신합니다. (출처: MDN)
+사용하는 예시는 아...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="검색어를 입력하세요..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+          <li><a href="https://github.com/makepin2r" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 makepin2r. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>
