@@ -1,0 +1,49 @@
+---
+title: "프로그래머스 문자열의 앞의 n글자 자바스크립트 알고리즘 풀이"
+last_modified_at: 2023-07-28
+categories:
+    - algorithm-programmers
+tags:
+    - algorithm
+    - JS
+    - programmers
+---
+
+## 문제
+
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181907)  
+![image](https://github.com/Kkan-bu/Kkan-bu/assets/39889583/d27f7af5-b097-4f13-becd-03c404d8fcf2)
+
+## 아이디어
+
+-   n이 주어지므로, 특정 인덱스로부터 n번째만큼 자르는 메서드인 `slice`를 사용한다.
+
+## 내 코드
+
+```javascript
+function solution(my_string, n) {
+    return my_string.slice(0, n);
+}
+```
+
+## 다른 사람 코드
+
+```javascript
+function solution(my_string, n) {
+    return my_string.substring(0, n);
+}
+```
+
+대부분 `substring`, `substr` 등 배열이나 문자열을 자를 수 있는 메서드를 활용했다.
+
+```javascript
+function solution(m, n) {
+    var answer = "";
+    for (let i = 0; i < n; i++) {
+        answer += m[i];
+    }
+    return answer;
+}
+```
+
+내장 메서드를 쓰지 않고 배열 형태로 접근해 가공한 방식도 있었다.

@@ -1,0 +1,57 @@
+---
+title: "프로그래머스 삼각형의 완성조건 (1) 자바스크립트 알고리즘 풀이"
+last_modified_at: 2023-10-06
+categories:
+    - algorithm-programmers
+tags:
+    - algorithm
+    - JS
+    - programmers
+---
+
+## 문제
+
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120889)  
+![image](https://github.com/makepin2r/TIL/assets/39889583/3f6b9bbc-e2a8-4611-9ebd-a247553ab94e)
+
+## 나의 풀이
+
+### 아이디어
+
+-   `sort`로 sides를 내림차순 정렬하여 가장 큰 변이 0번 인덱스에 오게 한다.
+-   나머지 변들의 길이 합보다 0번 인덱스 값보다 작은지를 확인하여 참이면 1 거짓이면 2를 반환한다.
+
+### 코드
+
+```javascript
+function solution(sides) {
+    sides.sort((a, b) => b - a);
+    return sides.at(0) < sides.at(1) + sides.at(2) ? 1 : 2;
+}
+```
+
+## 다른 사람 풀이
+
+```javascript
+function solution(sides) {
+    var answer = 0;
+    const max = Math.max(...sides);
+    const sum = sides.reduce((a, b) => a + b, 0) - max;
+
+    answer = max < sum ? 1 : 2;
+
+    return answer;
+}
+```
+
+`Math.max`를 통해 가장 큰 변의 길이를 구하고,  
+`reduce`를 통해 나머지 변들의 길이 합을 구해 비교한 풀이이다.
+
+```javascript
+function solution(sides) {
+    const [long, a, b] = sides.sort((a, b) => b - a);
+    return long < a + b ? 1 : 2;
+}
+```
+
+나와 같은 로직인데 구조분해를 사용해서 굉장히 가독성이 높아졌다.

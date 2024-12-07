@@ -1,0 +1,28 @@
+---
+title: "프로그래머스 뒤에서 5등 위로 자바스크립트 알고리즘 풀이"
+last_modified_at: 2023-10-12
+categories:
+    - algorithm-programmers
+tags:
+    - algorithm
+    - JS
+    - programmers
+---
+
+## 문제
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181852)  
+![image](https://github.com/makepin2r/TIL/assets/39889583/59823d6a-c51f-41dc-bb04-3230d237d849)
+
+## 나의 풀이
+### 아이디어
+- 오름차순으로 정렬한 뒤, 앞의 5개 원소를 제거한 배열을 반환한다.
+- `slice` 메서드의 두 번째 인자를 생략하면 시작 인덱스부터 끝까지를 반환하기 때문에 첫 번째 인자를 5로 넣어 배열을 잘라준다.
+### 코드
+```javascript
+function solution(num_list) {
+    return num_list.sort((a, b) => a - b).slice(5);
+}
+```
+
+## 다른 사람 풀이
+대부분의 풀이가 나의 풀이와 유사하여 생략.

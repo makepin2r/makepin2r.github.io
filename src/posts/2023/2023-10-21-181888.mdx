@@ -1,0 +1,34 @@
+---
+title: "프로그래머스 n개 간격의 원소들 자바스크립트 알고리즘 풀이"
+last_modified_at: 2023-10-21
+categories:
+    - algorithm-programmers
+tags:
+    - algorithm
+    - JS
+    - programmers
+---
+
+## 문제
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181888)  
+![image](https://github.com/makepin2r/TIL/assets/39889583/bd0ece18-937b-4f27-a88f-59bee842400b)
+
+## 나의 풀이
+### 코드
+```javascript
+function solution(num_list, n) {
+    const answer = [];
+    for(let i = 0; i < num_list.length; i += n){
+        answer.push(num_list[i]);
+    }
+    return answer;
+}
+```
+
+## 다른 사람 풀이
+```javascript
+const solution = (num_list, n) => num_list.filter((_, i) => !(i % n))
+```
+`filter`을 이용한 풀이.  
+사실 처음에는 이 방식을 쓰려 했으나, for문으로 필요한 만큼만 반복문을 도는 것이 더 좋을 것이라 생각했다.  
+실제로 for문을 사용할 때 미세하게 소요 시간이 적었고, 배열의 크기가 길다면 유의미한 차이가 있었을 것 같다.

@@ -1,0 +1,54 @@
+---
+title: "Vue 문법: 부모-자식 컴포넌트간 이벤트 전달하기 ($emit)"
+last_modified_at: 2023-10-21
+categories:
+    - vue
+tags:
+    - vue
+---
+
+## `$emit`으로 부모-자식간 이벤트 통신하기
+Vue에서 부모 - 자식 컴포넌트가 있을 때는 `$emit` 키워드를 사용해 이벤트를 통신한다. 총 n가지 과정으로 이벤트를 연결한다.
+
+### 1. 부모 컴포넌트에서 자식 컴포넌트에게 props 전달
+`v-bind` 디렉티브를 사용하여 전달한다.  
+`:[props 이름]="[부모 컴포넌트에서의 data명]"` 형태로, 자식 컴포넌트의 속성에 넣어준다.
+```html
+<template>
+    <Child :dataList="dataList" /> <!-- 이렇게! -->
+</template>
+
+<script>
+    import Child from './Child.vue';
+    export default {
+	    name: 'Parent',
+        data: {
+            dataList: [0, 1, 2],
+        },
+        components: {
+            Child
+        }
+    }; 
+</script>
+```
+
+### 2. 자식 컴포넌트에서 props 등록
+받은 props는 `props`에서 등록해주어야 사용 가능하다. 
+```html
+<template>
+    <div v-for="(data, i) in dataList" :key="i">Hi!</div>
+</template>
+
+<script>
+    export default {
+	    name: 'Child',
+        // 이렇게 등록해주어야 함
+        props: {
+            dataList
+        }
+    }; 
+</script>
+```
+
+## Vue에서 부모-자식간 이벤트 전달 방법
+(학습중)
