@@ -8,10 +8,14 @@ const menus: { route: string; name: string }[] = [
     route: "/",
     name: "Home",
   },
-  {
-    route: "/about",
-    name: "About",
-  },
+  // {
+  //   route: "/about",
+  //   name: "About",
+  // },
+  // {
+  //   route: "/blog",
+  //   name: "Blog",
+  // },
 ];
 
 const Header = () => {
