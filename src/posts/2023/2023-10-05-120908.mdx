@@ -1,12 +1,12 @@
 ---
 title: "프로그래머스 문자열안에 문자열 자바스크립트 알고리즘 풀이"
-last_modified_at: 2023-10-05
+date: 2023-10-05
 categories:
-    - algorithm-programmers
+  - algorithm-programmers
 tags:
-    - algorithm
-    - JS
-    - programmers
+  - algorithm
+  - JS
+  - programmers
 ---
 
 ## 문제
@@ -18,7 +18,7 @@ tags:
 
 ```javascript
 function solution(str1, str2) {
-    return str1.match(str2) !== null ? 1 : 2;
+  return str1.match(str2) !== null ? 1 : 2;
 }
 ```
 
@@ -30,7 +30,7 @@ function solution(str1, str2) {
 
 ```javascript
 function solution(str1, str2) {
-    return str1.indexOf(str2) === -1 ? 2 : 1;
+  return str1.indexOf(str2) === -1 ? 2 : 1;
 }
 ```
 
@@ -39,7 +39,7 @@ function solution(str1, str2) {
 
 ```javascript
 function solution(str1, str2) {
-    return str1.includes(str2) ? 1 : 2;
+  return str1.includes(str2) ? 1 : 2;
 }
 ```
 
@@ -50,4 +50,4 @@ true / false로 반환되므로 그대로 조건문에 이용했다.
 
 #### 레퍼런스
 
--   [MDN String.prototype.match()](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String/match)
+- [MDN String.prototype.match()](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String/match)

@@ -1,49 +1,62 @@
 ---
 title: "프로그래머스 순서쌍의 개수 자바스크립트 알고리즘 풀이"
-last_modified_at: 2023-10-09
+date: 2023-10-09
 categories:
-    - algorithm-programmers
+  - algorithm-programmers
 tags:
-    - algorithm
-    - JS
-    - programmers
+  - algorithm
+  - JS
+  - programmers
 ---
 
 ## 문제
+
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120836)  
 ![image](https://github.com/makepin2r/makepin2r.github.io/assets/39889583/6e279325-79a5-4091-8104-d4a2374d4f55)
 
 ## 나의 풀이
+
 ### 아이디어
+
 - n의 제곱근을 기준으로, 순서쌍은 대칭을 이룬다.  
   예를 들어 n이 20이라면 (1, 20), (2, 10), ... (10, 2), (20, 1) 이렇게 된다.  
   그러므로 제곱근보다 작은 수까지만 반복문을 순회한다.
 - 반복문 내에서는 n이 어떤 자연수로 나누어떨어질 경우 카운팅한다.
-- 절반만 순회하였으므로 대칭되는 나머지 경우의 수를 더하기 위해 count * 2해주고, n의 제곱근이 자연수인 경우 순서쌍이 하나 더 발생하므로 + 1해준다. 
+- 절반만 순회하였으므로 대칭되는 나머지 경우의 수를 더하기 위해 count \* 2해주고, n의 제곱근이 자연수인 경우 순서쌍이 하나 더 발생하므로 + 1해준다.
+
 ### 코드
+
 ```javascript
 function solution(n) {
-    let count = 0;
-    for(let i = 1; i < Math.sqrt(n); ++i) { n % i === 0 && count++; }
-    count = count * 2 + (Math.sqrt(n) === ~~(Math.sqrt(n)) ? 1 : 0);
-    return count;
+  let count = 0;
+  for (let i = 1; i < Math.sqrt(n); ++i) {
+    n % i === 0 && count++;
+  }
+  count = count * 2 + (Math.sqrt(n) === ~~Math.sqrt(n) ? 1 : 0);
+  return count;
 }
 ```
 
 ## 다른 사람 풀이
-```javascript
-function solution(n) {
-    let ans = 0;
-    for (let i = 1; i < Math.sqrt(n); i++)
-        if (n%i === 0) ans+=2;
 
-    return Number.isInteger(Math.sqrt(n)) ? ans+1 : ans;
-}
-```
-반복문에서 바로 2씩 더해주고, 리턴문에 `Number.isInteger` 메서드를 사용한 부분이 나와 달랐다.
 ```javascript
 function solution(n) {
-    return Array(n).fill(1).map((v,idx) => v + idx).filter(v => n % v === 0).length
+  let ans = 0;
+  for (let i = 1; i < Math.sqrt(n); i++) if (n % i === 0) ans += 2;
+
+  return Number.isInteger(Math.sqrt(n)) ? ans + 1 : ans;
 }
 ```
+
+반복문에서 바로 2씩 더해주고, 리턴문에 `Number.isInteger` 메서드를 사용한 부분이 나와 달랐다.
+
+```javascript
+function solution(n) {
+  return Array(n)
+    .fill(1)
+    .map((v, idx) => v + idx)
+    .filter(v => n % v === 0).length;
+}
+```
+
 1~n까지의 배열을 만든 뒤 filter 함수를 사용한 결과물의 length를 반환한 풀이.

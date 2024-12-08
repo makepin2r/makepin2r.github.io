@@ -1,47 +1,56 @@
 ---
 title: "프로그래머스 0 떼기 자바스크립트 알고리즘 풀이"
-last_modified_at: 2023-10-18
+date: 2023-10-18
 categories:
-    - algorithm-programmers
+  - algorithm-programmers
 tags:
-    - algorithm
-    - JS
-    - programmers
+  - algorithm
+  - JS
+  - programmers
 ---
 
 ## 문제
+
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181847)  
 ![image](https://github.com/makepin2r/TIL/assets/39889583/76d38dd3-b4bc-4e50-be0a-152a4814c439)
 
 ## 나의 풀이
+
 ### 코드
+
 ```javascript
 function solution(n_str) {
-    let targetIdx = 0;
-    for(let i = 0; i < n_str.length; ++i){
-        if(n_str.at(i) !== '0') {
-            targetIdx = i; break;
-        }
+  let targetIdx = 0;
+  for (let i = 0; i < n_str.length; ++i) {
+    if (n_str.at(i) !== "0") {
+      targetIdx = i;
+      break;
     }
-    return n_str.slice(targetIdx);
+  }
+  return n_str.slice(targetIdx);
 }
 ```
 
 ## 다른 사람 풀이
+
 ```javascript
-const solution = (str) => String(Number(str))
+const solution = str => String(Number(str));
 ```
+
 ```javascript
-const solution=s=>+s+''
+const solution = s => +s + "";
 ```
-😲... 이런 신박한 방법이 있구나  
+
+😲... 이런 신박한 방법이 있구나
+
 ```javascript
 function solution(n_str) {
-  return n_str.replace(/^0+/, '');
+  return n_str.replace(/^0+/, "");
 }
 ```
+
 정규표현식을 활용한 풀이도 있었다.  
 `^`은 문자열의 시작을 의미하고, `+`가 문자 뒤에 붙으면 해당 문자가 1개 이상 연속으로 나오는 것을 의미한다.  
-그러므로 문자열 앞에 위치한 0만 제거할 수 있게 된다.  
-  
-정규표현식이 아직 익숙하지 않을 때가 많은데, 한 번 날 잡아서 규칙들을 쭉 공부해봐도 좋겠다.  
+그러므로 문자열 앞에 위치한 0만 제거할 수 있게 된다.
+
+정규표현식이 아직 익숙하지 않을 때가 많은데, 한 번 날 잡아서 규칙들을 쭉 공부해봐도 좋겠다.
