@@ -69,7 +69,7 @@ export const getPostList = async (category?: string): Promise<Post[]> => {
 
 // post 상세 페이지 내용 조회
 export const getPostDetail = async (category: string, slug: string) => {
-  const filePath = `${POSTS_PATH}/${category}/${slug}/content.mdx`;
+  const filePath = `${POSTS_PATH}/${category}/${slug}.mdx`;
   const detail = await parsePost(filePath);
   return detail;
 };
