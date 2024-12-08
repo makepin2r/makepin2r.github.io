@@ -1,6 +1,6 @@
-import { Post } from "@/config/types";
-import { getPostDetail, getPostPaths, parsePostAbstract } from "@/libs/post";
 import React from "react";
+import { getPostDetail, getPostPaths, parsePostAbstract } from "@/libs/post";
+import PostBody from "@/app/components/postDetail/PostBody";
 
 type PageProps = {
   params: { category: string; slug: string };
@@ -19,7 +19,7 @@ export function generateStaticParams() {
 const page = async ({ params: { category, slug } }: PageProps) => {
   const post = await getPostDetail(category, slug);
 
-  return <div>{post.content}</div>;
+  return <PostBody post={post} />;
 };
 
 export default page;
