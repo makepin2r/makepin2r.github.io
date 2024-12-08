@@ -1,0 +1,53 @@
+---
+title: "프로그래머스 문자열안에 문자열 자바스크립트 알고리즘 풀이"
+last_modified_at: 2023-10-05
+categories:
+    - algorithm-programmers
+tags:
+    - algorithm
+    - JS
+    - programmers
+---
+
+## 문제
+
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120908)  
+![image](https://github.com/makepin2r/TIL/assets/39889583/f3f96cb3-443d-4b17-9426-057055cad992)
+
+## 나의 풀이
+
+```javascript
+function solution(str1, str2) {
+    return str1.match(str2) !== null ? 1 : 2;
+}
+```
+
+`match` 메서드는 매개변수의 문자열 or 정규식과 대상 문자열이 일치하는 경우 일치 문자열 결과를 담은 배열을 반환한다.  
+일치되지 않으면 `null`을 반환한다.  
+그러므로 `str1.match(str2)`의 결과값이 null이 아니면 1, 그 외에는 2를 반환한다.
+
+## 다른 사람 풀이
+
+```javascript
+function solution(str1, str2) {
+    return str1.indexOf(str2) === -1 ? 2 : 1;
+}
+```
+
+`indexOf`를 이용한 풀이.  
+만약 일치 부분이 없으면 -1를 반환하는 점을 이용했다.
+
+```javascript
+function solution(str1, str2) {
+    return str1.includes(str2) ? 1 : 2;
+}
+```
+
+`includes`를 이용한 풀이.  
+true / false로 반환되므로 그대로 조건문에 이용했다.
+
+---
+
+#### 레퍼런스
+
+-   [MDN String.prototype.match()](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String/match)

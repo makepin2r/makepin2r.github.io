@@ -1,0 +1,32 @@
+---
+title: "프로그래머스 부분 문자열 이어 붙여 문자열 만들기 자바스크립트 알고리즘 풀이"
+last_modified_at: 2023-10-18
+categories:
+    - algorithm-programmers
+tags:
+    - algorithm
+    - JS
+    - programmers
+---
+
+## 문제
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181911)  
+![image](https://github.com/makepin2r/TIL/assets/39889583/9262bbf1-b3b1-443a-9c70-5548c9aa8c97)
+
+## 나의 풀이
+### 코드
+```javascript
+function solution(my_strings, parts) {
+    return my_strings.reduce((total, v, i) => total += v.slice(parts[i][0], parts[i][1] + 1), "");
+}
+```
+
+## 다른 사람 풀이
+```javascript
+function solution(my_strings, parts) {
+    return parts.map(([s, e], i) => {
+        return my_strings[i].slice(s, e + 1)
+    }).join('')
+}
+```
+매개변수도 구조분해할 수 있다는 사실을 처음 알았다!

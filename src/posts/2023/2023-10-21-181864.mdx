@@ -1,0 +1,30 @@
+---
+title: "프로그래머스 문자열 바꿔서 찾기 자바스크립트 알고리즘 풀이"
+last_modified_at: 2023-10-21
+categories:
+    - algorithm-programmers
+tags:
+    - algorithm
+    - JS
+    - programmers
+---
+
+## 문제
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181864)  
+![image](https://github.com/makepin2r/TIL/assets/39889583/6e3a3860-4ecd-4c9e-a950-2ce801bfd340)
+
+## 나의 풀이
+### 아이디어
+- 문자열을 반전한다. 이때 myString이 아닌 길이가 10 이하인 pat을 반전시키는 게 더 효율적일 것 같았다.  
+    - 문자열 반전시 map을 이용한다.  
+- includes를 이용해 부분 문자열이 포함되어있는지를 숫자로 형변환해 리턴한다.
+### 코드
+```javascript
+function solution(myString, pat) {
+    const target = [...pat].map(v => v === "A" ? "B" : "A").join(""); // 길이가 더 짧은 pat을 반전시켜준다.
+    return +myString.includes(target);
+}
+```
+
+## 다른 사람 풀이
+대부분 풀이가 유사하여 생략.

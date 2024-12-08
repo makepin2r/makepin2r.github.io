@@ -1,0 +1,78 @@
+---
+title: "프로그래머스 짝지어 제거하기 자바스크립트 알고리즘 풀이"
+last_modified_at: 2023-10-10
+categories:
+    - algorithm-programmers
+tags:
+    - algorithm
+    - JS
+    - programmers
+---
+
+## 문제
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12973)  
+![image](https://github.com/makepin2r/TIL/assets/39889583/43967bf0-0d99-44a2-92ab-60bbe2d17733)
+
+## 나의 풀이
+### 아이디어 1 : 실패
+- 문자열을 배열화한다.
+- 겹치는 알파벳들이 나타나면 둘을 splice로 배열에서 제거한 뒤 첫 인덱스부터 다시 검사한다.
+### 코드
+```javascript
+let arr = s.split("");
+    let i = 0; // 체크용 인덱스
+    while(i < arr.length - 1) {
+        if(arr[i] === arr[i + 1]){
+            arr.splice(i, 2);
+            i = 0;
+        } else ++i;
+    }
+    return arr.length === 0 ? 1 : 0;
+```
+시간 초과로 대차게 실패!  
+
+### 아이디어 2 : 실패
+- 2개가 겹치는 시작 인덱스를 찾을 때까지 문자열을 기록해둔다.
+- 겹치는 시작 인덱스를 찾으면 기록해둔 문자열 길이만큼의 인덱스를 체크한다.
+    - 대칭이면 넘기고 끝나는 인덱스부터 다시 1번 검증 시작
+    - 대칭 안맞으면 break
+### 코드
+```javascript
+let arr = [...s];
+    let temp = [];
+    for(let i = 0; i < arr.length - 1; ++i) {
+        temp.push(s[i]);
+        if(s[i] === s[i+1]){
+            if([...temp].reverse().join("") === arr.slice(i+1, i + 1 + temp.length).join("")) { 
+                i += (temp.length + 1);
+                temp = [];
+            } else {
+                return 0;
+            }
+        }
+    }
+    return temp.length > 0 ? 0 : 1;
+```
+일부가 통과되지 않았다.  
+조건이 맞으면 검사한 만큼 인덱스를 넘겨버렸는데 이 부분이 문제가 될 수있겠다는 생각이 들었다.
+
+### 아이디어 3 : 성공
+좀더 고민하다가 스택과 같은 방식으로 풀어보기로 했다.  
+- 빈 문자열을 만든 뒤, 반복문을 돌며 아래와 같은 로직을 수행한다.
+    - 스택에 값이 있고 스택 내 값과 현재 검사하는 값이 동일하면 => 2개의 알파벳이 중복되는 상황. 스택의 마지막 원소를 pop한다
+        - 선입후출이기 때문에 대칭되는 값들이 순차적으로 pop될 것이다.
+    - 위의 상황이 아니라면 현재 검사하는 값을 push해준다.
+- 반복문이 완료된 후 스택에 남은 값이 있다면 알파벳들이 붙어있지 않았다는 뜻이므로 0 리턴한다.
+### 코드
+```javascript
+let temp = [];
+    for(let v of s){
+        if(temp.length > 0 && temp.at(-1) === v) {
+            temp.pop();
+        } else temp.push(v);
+    }
+    return temp.length === 0 ? 1 : 0;
+```
+
+## 다른 사람 풀이
+대부분 스택 방식을 선택하여 풀었고, 내부 조건의 경우도 유사하여 생략한다.

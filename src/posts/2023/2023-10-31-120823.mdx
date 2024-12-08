@@ -1,0 +1,58 @@
+---
+title: "프로그래머스 직각삼각형 출력하기 자바스크립트 알고리즘 풀이"
+last_modified_at: 2023-10-31
+categories:
+    - algorithm-programmers
+tags:
+    - algorithm
+    - JS
+    - programmers
+---
+
+## 문제
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120823)  
+![image](https://github.com/makepin2r/TIL/assets/39889583/9c58a109-36f8-455d-a837-fba2008dbda0)
+
+## 나의 풀이
+### 코드
+```javascript
+const readline = require('readline');
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+let input = [];
+
+rl.on('line', function (line) {
+    input = line.split(' ');
+}).on('close', function () {
+    for(let i = 1; i <= Number(input[0]); ++i){
+        let str = '';
+        for(let j = 1; j <= i; ++j){
+            str += '*';
+        }
+        console.log(str);
+    }
+});
+```
+
+## 다른 사람 풀이
+```javascript
+const readline = require('readline');
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+let input = [];
+
+rl.on('line', function (line) {
+    input = line.split(' ');
+}).on('close', function () {
+    for (let i = 1; i <= +input[0]; i++) {
+        console.log('*'.repeat(i));
+    }
+});
+```
+반복문을 굳이 2번 사용하지 않고 `repeat`를 이용할 수 있다.
