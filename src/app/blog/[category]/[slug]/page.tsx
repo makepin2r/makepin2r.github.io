@@ -2,9 +2,10 @@ import React from "react";
 import { getPostDetail, getPostPaths, parsePostAbstract } from "@/libs/post";
 import PostBody from "@/app/components/postDetail/PostBody";
 
-type PageProps = {
-  params: { category: string; slug: string };
-};
+interface PageParams {
+  category: string;
+  slug: string;
+}
 
 export const dynamicParams = false;
 
@@ -16,7 +17,9 @@ export function generateStaticParams() {
   return paramList;
 }
 
-const page = async ({ params: { category, slug } }: PageProps) => {
+const page = async (props: { params: Promise<PageParams> }) => {
+  const params = await props.params;
+  const { category, slug } = params;
   const post = await getPostDetail(category, slug);
 
   return <PostBody post={post} />;
