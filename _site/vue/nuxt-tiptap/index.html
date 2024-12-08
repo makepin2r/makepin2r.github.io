@@ -1,0 +1,860 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>자유로운 커스텀 에디터를 만들어보자 : TipTap 도입기 (Nuxt 3) - 일어나… 개발해야지</title>
+<meta name="description" content="Toast Editor… 안녕 회사에서 커뮤니티 게시판 기능을 개선하는 프로젝트에서, 에디터를 전면 수정하게 되었다. 기존에는 Toast 에디터를 이용해 정석적인 형태의 UI만 제공하고 있었다. (블로그 글쓰기 화면같이 상단에 툴바가 있는 모양이었다.)">
+
+
+  <meta name="author" content="makepin2r">
+  
+  <meta property="article:author" content="makepin2r">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="일어나... 개발해야지">
+<meta property="og:title" content="자유로운 커스텀 에디터를 만들어보자 : TipTap 도입기 (Nuxt 3)">
+<meta property="og:url" content="http://localhost:4000/vue/nuxt-tiptap/">
+
+
+  <meta property="og:description" content="Toast Editor… 안녕 회사에서 커뮤니티 게시판 기능을 개선하는 프로젝트에서, 에디터를 전면 수정하게 되었다. 기존에는 Toast 에디터를 이용해 정석적인 형태의 UI만 제공하고 있었다. (블로그 글쓰기 화면같이 상단에 툴바가 있는 모양이었다.)">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2024-11-22T00:00:00+09:00">
+
+
+
+  <meta property="article:modified_time" content="2024-11-22T00:00:00+09:00">
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/vue/nuxt-tiptap/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "makepin2r",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="일어나... 개발해야지 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          일어나... 개발해야지
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/bio-photo.jpg" alt="makepin2r" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">makepin2r</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">팔로우</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">South Korea</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:makepin2r@gmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/makepin2r" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <li> 총 90개의 게시글 </li>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">기록</span>
+        
+
+        
+        <ul>
+          
+          
+          
+          
+          
+
+            <li><a href="/til">TIL (20)</a></li>
+          
+          
+          
+          
+          
+
+            <li><a href="/wil">WIL (0)</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Frontend</span>
+        
+
+        
+        <ul>
+          
+          
+          
+          
+          
+
+            <li><a href="/js">JavaScript (3)</a></li>
+          
+          
+          
+          
+          
+
+            <li><a href="/ts">TypeScript (0)</a></li>
+          
+          
+          
+          
+          
+
+            <li><a href="/vue">Vue (7)</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Data Science</span>
+        
+
+        
+        <ul>
+          
+          
+          
+          
+          
+
+            <li><a href="/python">Python (1)</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">CS</span>
+        
+
+        
+        <ul>
+          
+          
+          
+          
+          
+
+            <li><a href="/http">HTTP (0)</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">알고리즘</span>
+        
+
+        
+        <ul>
+          
+          
+          
+          
+          
+
+            <li><a href="/algorithm-programmers">프로그래머스 (49)</a></li>
+          
+          
+          
+          
+          
+
+            <li><a href="/algorithm">알고리즘 & 자료구조 (0)</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">재미있는 것들</span>
+        
+
+        
+        <ul>
+          
+          
+          
+          
+          
+
+            <li><a href="/tips">꿀팁 (1)</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="자유로운 커스텀 에디터를 만들어보자 : TipTap 도입기 (Nuxt 3)">
+    <meta itemprop="description" content="Toast Editor… 안녕회사에서 커뮤니티 게시판 기능을 개선하는 프로젝트에서, 에디터를 전면 수정하게 되었다.기존에는 Toast 에디터를 이용해 정석적인 형태의 UI만 제공하고 있었다.(블로그 글쓰기 화면같이 상단에 툴바가 있는 모양이었다.)">
+    <meta itemprop="datePublished" content="2024-11-22T00:00:00+09:00">
+    <meta itemprop="dateModified" content="2024-11-22T00:00:00+09:00">
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/vue/nuxt-tiptap/" class="u-url" itemprop="url">자유로운 커스텀 에디터를 만들어보자 : TipTap 도입기 (Nuxt 3)
+</a>
+          </h1>
+          
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <h2 id="toast-editor-안녕">Toast Editor… 안녕</h2>
+<p>회사에서 커뮤니티 게시판 기능을 개선하는 프로젝트에서, 에디터를 전면 수정하게 되었다.<br />
+기존에는 Toast 에디터를 이용해 정석적인 형태의 UI만 제공하고 있었다.<br />
+(블로그 글쓰기 화면같이 상단에 툴바가 있는 모양이었다.)<br />
+<img src="https://github.com/user-attachments/assets/d977398a-5db9-401f-9581-f723005cb41f" alt="원래는 이렇게 생겼다." /></p>
+
+<p>이번 개선안을 구현하려면 Toast만으로 대응하기 어려운 포인트들이 있었다.</p>
+<ul>
+  <li>타이포그래피를 변경하는 UI가 자유롭게 커스텀이 되어야 함
+    <ul>
+      <li>새로운 UI에서는 별도의 드롭다운에서 제목 레벨, 볼드, 이탤릭 처리 등이 필요했다.</li>
+      <li>Toast는 툴바 내의 요소를 자유롭게 세팅할 수 있으나, 타이포그래피 변경하는 메서드를 내가 만든 UI에 연결하는 방식을 지원하지 않았다.</li>
+    </ul>
+  </li>
+  <li>HTML과 Markdown을 모두 지원하고, 입력 즉시 양식이 적용되어야 함
+    <ul>
+      <li>Toast의 경우 위지윅 모드로 입력할 때는 입력창에 바로 타이포그래피가 적용된 상태로 출력된다. 단 마크다운은 입력 - preview 창이 나뉘어져 있다.</li>
+      <li>이번 기획안에서는 HTML과 마크다운 모두 입력창에서 양식이 적용된 형태로 확인 및 수정이 가능해야 했다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>문제점을 추려 보고 나니, 현재 우리 프로젝트에 맞는 새로운 라이브러리를 찾아야겠다는 결론이 났다.</p>
+
+<h2 id="tiptap을-선택한-이유">TipTap을 선택한 이유</h2>
+<p>최종적으로 선택한 것은 <a href="https://tiptap.dev/product/editor">TipTap</a>이었다.
+<img src="https://github.com/user-attachments/assets/7c145191-3e43-41c0-a0a2-abd603c36e41" alt="TipTap" />
+텍스트 에디터도 headless 라이브러리가 있었다니!</p>
+
+<p>여러 라이브러리를 검토해보고 TipTap을 선택한 이유는 이러했다.</p>
+
+<blockquote>
+  <ol>
+    <li>Nuxt, Next 모두 호환 가능할 것</li>
+    <li>텍스트 편집 기능을 커스텀 가능하게 제공할 것</li>
+    <li>HTML, Markdown을 모두 지원할 것</li>
+    <li>HTML, Markdown 상관 없이 모두 입력창에 즉시 적용된 양식이 보여질 것</li>
+    <li>무료면 좋겠다…</li>
+  </ol>
+</blockquote>
+
+<p>위 5 가지 조건은 Toast에서 아쉬웠던 점과 프로젝트에서 꼭 필요한 기능들을 모아 정리한 것들이다.</p>
+
+<p>일단 우리 회사는 기존 웹서비스를 모바일 앱으로 옮기는 작업도 하고 있다.<br />
+웹서비스는 Nuxt 3, 웹뷰는 Next 14 기반으로 제작되기 때문에 되도록 두 환경 모두 매끄럽게 호환되는 라이브러리를 희망했다.</p>
+
+<p>또한 디자인에 맞추려면 텍스트 편집 기능을 자유롭게 직접 만든 UI에 연결할 수 있어야 했고, 위지윅이든 마크다운이든 입력창에 바로 텍스트 양식이 적용되어야 했다. 기능 별로 위지윅/마크다운 작성이 혼용되어 있기 때문이다.</p>
+
+<p>직접 적용해본 결과, 자유도가 높은 만큼 품도 많이 들긴 한다.<br />
+그래도 웬만한 것들은 구현이 가능해서 만족도가 높다.</p>
+
+<h2 id="nuxt-3에-tiptap-세팅하는-방법-에디터-컴포넌트-만들기">Nuxt 3에 TipTap 세팅하는 방법 (에디터 컴포넌트 만들기)</h2>
+<p><a href="https://tiptap.dev/docs/editor/getting-started/overview">공식 문서</a>를 참고해 Nuxt 3 기반의 프로젝트에 에디터 컴포넌트를 작성했다.</p>
+
+<p>우리 프로젝트에는 입력 기능을 지원해야 하는 곳이 많고, 기능마다 UI 형태가 조금씩  다르다.<br />
+관리가 편하도록 에디터 초기화와 기본적인 기능이 포함된 컴포넌트를 만든 뒤 (이미지 업로드, 타이포그래피 CSS 등), 추후 디자인을 덧씌운 실제 UI 컴포넌트를 그때 그때 만들기로 했다.</p>
+
+<h3 id="라이브러리-설치하기">라이브러리 설치하기</h3>
+<p>먼저 라이브러리를 설치한다. 기본으로 설치해야 하는 패키지는 아래 3가지다.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> @tiptap/vue-3 @tiptap/pm @tiptap/starter-kit
+</code></pre></div></div>
+
+<p>마크다운도 지원해야 하므로 추가로 한 가지를 더 설치했다.
+https://github.com/aguingand/tiptap-markdown</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install </span>tiptap-markdown
+</code></pre></div></div>
+
+<h3 id="컴포넌트-만들기">컴포넌트 만들기</h3>
+<p>패키지를 모두 설치했다면 기본적인 컴포넌트를 만든다.<br />
+(아래 예시 코드의 개발 환경은 Nuxt 3, Vue 3 이다.)</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;template&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"editor-content"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+
+<span class="nt">&lt;script </span><span class="na">lang=</span><span class="s">"ts"</span> <span class="na">setup</span><span class="nt">&gt;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ref</span><span class="p">,</span> <span class="nx">onMounted</span><span class="p">,</span> <span class="nx">onBeforeUnmount</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">vue</span><span class="dl">'</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Editor</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@tiptap/vue-3</span><span class="dl">'</span>
+<span class="k">import</span> <span class="nx">StarterKit</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@tiptap/starter-kit</span><span class="dl">'</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Markdown</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">tiptap-markdown</span><span class="dl">'</span>
+
+<span class="kd">const</span> <span class="nx">props</span> <span class="o">=</span> <span class="nx">defineProps</span><span class="o">&lt;</span><span class="p">{</span>
+  <span class="na">modelValue</span><span class="p">:</span> <span class="nx">string</span>
+<span class="p">}</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="kd">const</span> <span class="nx">emit</span> <span class="o">=</span> <span class="nx">defineEmits</span><span class="o">&lt;</span><span class="p">{</span>
+  <span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="dl">'</span><span class="s1">update:modelValue</span><span class="dl">'</span><span class="p">,</span> <span class="na">value</span><span class="p">:</span> <span class="nx">string</span><span class="p">):</span> <span class="k">void</span>
+<span class="p">}</span><span class="o">&gt;</span><span class="p">()</span>
+
+<span class="kd">const</span> <span class="nx">inputValue</span> <span class="o">=</span> <span class="nf">computed</span><span class="p">({</span>
+  <span class="na">get</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">props</span><span class="p">.</span><span class="nx">modelValue</span><span class="p">,</span>
+  <span class="na">set</span><span class="p">:</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nf">emit</span><span class="p">(</span><span class="dl">'</span><span class="s1">update:modelValue</span><span class="dl">'</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="kd">const</span> <span class="nx">editor</span> <span class="o">=</span> <span class="nx">ref</span><span class="o">&lt;</span><span class="nx">Editor</span> <span class="o">|</span> <span class="kc">null</span><span class="o">&gt;</span><span class="p">(</span><span class="kc">null</span><span class="p">)</span>
+
+<span class="nf">onMounted</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="c1">// 에디터 초기화</span>
+  <span class="nx">editor</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Editor</span><span class="p">({</span>
+    <span class="na">element</span><span class="p">:</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.editor-content</span><span class="dl">'</span><span class="p">)</span> <span class="nx">as</span> <span class="nx">HTMLElement</span><span class="p">,</span>
+    <span class="na">content</span><span class="p">:</span> <span class="nx">inputValue</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span>
+    <span class="na">extensions</span><span class="p">:</span> <span class="p">[</span>
+      <span class="nx">StarterKit</span><span class="p">,</span>
+      <span class="nx">Markdown</span>
+    <span class="p">],</span>
+    <span class="na">onUpdate</span><span class="p">:</span> <span class="p">({</span> <span class="nx">editor</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="c1">// 값 입력 시 수행할 로직</span>
+      <span class="nx">inputValue</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">editor</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">markdown</span><span class="p">.</span><span class="nf">getMarkdown</span><span class="p">()</span>
+      <span class="c1">// HTML 형태로 전달하고 싶다면 editor.getHTML() 을 넘겨주자</span>
+    <span class="p">}</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+
+<span class="nf">onBeforeUnmount</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="c1">// 클린업</span>
+  <span class="nx">editor</span><span class="p">.</span><span class="nx">value</span><span class="p">?.</span><span class="nf">destroy</span><span class="p">()</span>
+<span class="p">})</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;style </span><span class="na">lang=</span><span class="s">"scss"</span> <span class="na">scoped</span><span class="nt">&gt;</span>
+    <span class="c">/* 타이포그래피 커스텀이 필요하다면 추가하기 */</span>
+<span class="nt">&lt;/style&gt;</span>
+</code></pre></div></div>
+
+<p>먼저 컴포넌트가 생성될 때, TipTap 에디터를 초기화해준다.<br />
+<code class="language-plaintext highlighter-rouge">new Editor()</code> 생성자를 이용하고, 추가적인 세팅이 필요하다면 생성자 안에 객체로 넘겨주면 된다. 옵션은 <a href="https://tiptap.dev/docs/editor/getting-started/configure">공식 문서</a>에 잘 설명되어 있다.<br />
+컴포넌트가 종료될 때 클린업을 위하여 생성된 Editor 인스턴스는 변수에 할당해둔다.</p>
+
+<p>먼저 <code class="language-plaintext highlighter-rouge">element</code> 옵션에서 초기화할 HTML 엘리먼트를 지정해준다. 
+<code class="language-plaintext highlighter-rouge">content</code>는 초기 입력값을 지정할 수 있는 옵션이다. 문자열을 그냥 넘겨줘도 되지만, 동적으로 초기값을 지정해줄 경우를 생각해서 나는 props가 연결된 ref 변수의 값을 넣어주었다.</p>
+
+<p>참고로 inputValue라는 computed 변수를 따로 지정해둔 이유는, 입력값을 외부 ref 변수에 연결해두고 싶었기 때문이다.<br />
+따로 연결하지 않고 Editor 내의 최종 값만 나중에 전송하면 업데이트가 덜 일어나겠지만, 그러려면 최종 전송 이벤트를 트리거하는 추가적인 요소가 이 컴포넌트에 붙어야 한다. 외부 ref 값에 연결해두면 저장 버튼같은 부수적인 UI를 따로 두지 않고 순수하게 에디터만 있는 컴포넌트를 만들 수 있다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">extension</code>은 추가하고 싶은 패키지를 등록하는 옵션이다. 나의 경우 StarterKit을 등록해주었다. 기본적인 텍스트 편집 기능이 모두 포함되어있는 패키지다. + 추가로 마크다운 기능을 위해 Markdown 패키지도 포함했다. 
+각각의 익스텐션은 <code class="language-plaintext highlighter-rouge">configure</code> 메서드를 활용해 더 디테일하게 커스텀할 수 있다. 예를 들면, Heading의 레벨을 1~3까지만 사용하고 싶다면 이렇게 수정하면 된다.</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ...</span>
+    <span class="nx">extensions</span><span class="p">:</span> <span class="p">[</span>
+      <span class="nx">StarterKit</span><span class="p">.</span><span class="nf">configure</span><span class="p">({</span>
+        <span class="na">heading</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">levels</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="p">}</span>
+      <span class="p">}),</span>
+      <span class="nx">Markdown</span>
+    <span class="p">],</span>
+<span class="c1">// ...</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">onUpdate</code>는 입력값이 변경될 때 트리거 된다. 입력 시 추가적인 로직 수행이 필요할 때 옵션을 추가하면 된다.</p>
+
+<h2 id="문제-발생">문제 발생…!</h2>
+<p>컴포넌트는 아주 잘 작동했으나, 만들고 나니 문제가 하나 있었다.<br />
+특이하게도 엔터키를 눌렀을 때 아무런 작동도 하지 않더라…!</p>
+
+<p>Shift + Enter를 누르면 <code class="language-plaintext highlighter-rouge">\n</code>이 입력되어 줄바꿈은 되지만, 양식이 적용된 상태에선 마크다운의 단축키가 새롭게 인식되지 않았다.</p>
+
+<p>이를 해결하기 위해 추가적인 수정을 거치게 되었다.<br />
+다음 글에서 엔터키 적용을 위한 트러블슈팅에 대해 적어보려 한다.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 태그: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#nuxt" class="page__taxonomy-item p-category" rel="tag">nuxt</a><span class="sep">, </span>
+    
+      <a href="/tags/#vue" class="page__taxonomy-item p-category" rel="tag">vue</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 카테고리: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#vue" class="page__taxonomy-item p-category" rel="tag">vue</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 업데이트:</strong> <time class="dt-published" datetime="2024-11-22">November 22, 2024</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">공유하기</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%EC%9E%90%EC%9C%A0%EB%A1%9C%EC%9A%B4+%EC%BB%A4%EC%8A%A4%ED%85%80+%EC%97%90%EB%94%94%ED%84%B0%EB%A5%BC+%EB%A7%8C%EB%93%A4%EC%96%B4%EB%B3%B4%EC%9E%90+%3A+TipTap+%EB%8F%84%EC%9E%85%EA%B8%B0+%28Nuxt+3%29%20http%3A%2F%2Flocalhost%3A4000%2Fvue%2Fnuxt-tiptap%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fvue%2Fnuxt-tiptap%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fvue%2Fnuxt-tiptap%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="공유하기 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/python/python-poetry-version/" class="pagination--pager" title="poetry에서 파이썬 버전 관련 에러 해결하기 (The current project’s supported Python range…)
+">이전</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">다음</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">참고</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/python/python-poetry-version/" rel="permalink">poetry에서 파이썬 버전 관련 에러 해결하기 (The current project’s supported Python range…)
+</a>
+      
+    </h2>
+    
+
+
+    <p class="archive__item-excerpt" itemprop="description">파이썬을 학습하며 다양한 버전을 사용해야 해서, pyenv와 poetry를 이용하고 있다.
+pyenv는 여러 파이썬 버전을 관리 및 변경해 사용할 수 있도록 도와주는 version management 라이브러리이며,
+poetry는 가상환경 및 파이썬 패키지 매니징 기능을 제공하는 ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/vue/vue-floating-component/" rel="permalink">Vue UI 컴포넌트: 상하 스크롤을 따라다니는 플로팅 컴포넌트 만들기 (추가 라이브러리 X)
+</a>
+      
+    </h2>
+    
+
+
+    <p class="archive__item-excerpt" itemprop="description">플로팅 컴포넌트 만들기
+상하 스크롤을 쫓아오는 플로팅 메뉴를 만들어야 했다.
+해당 기능을 또 쓸 일이 있을 것 같아, 플로팅 기능만 유틸처럼 떼놓은 형태의 컴포넌트를 만들기로 결정했다.
+현재는 위치를 디테일하게 정하는 기능 없이, 일단 스크롤을 따라다니는 기능만 만들어본다.
+(Vu...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/js/js-window-getcomputedstyle/" rel="permalink">Window.getComputedStyle이란?
+</a>
+      
+    </h2>
+    
+
+
+    <p class="archive__item-excerpt" itemprop="description">Window.getComputedStyle()
+브라우저에 그려진 엘리먼트의 스타일을 객체로 반환해주는 메서드이다.
+
+  Window.getComputedStyle() 메소드는 인자로 전달받은 요소의 모든 CSS 속성값을 담은 객체를 회신합니다. (출처: MDN)
+사용하는 예시는 아...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/tips/mac-right-command/" rel="permalink">맥북 (M2) 카라비너 없이 한영키를 우측 커맨드키로 바꾸기
+</a>
+      
+    </h2>
+    
+
+
+    <p class="archive__item-excerpt" itemprop="description">이번 맥북 OS를 Sonoma로 업데이트하면서 두 가지의 버그를 경험했다.
+
+  날짜와 시간이 부정확하게 설정되는 오류
+  기존 외장 프로그램(카라비너)으로 세팅한 키보드 설정 인식이 잘 되지 않는 오류
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="검색어를 입력하세요..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+          <li><a href="https://github.com/makepin2r" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2024 makepin2r. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>

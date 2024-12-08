@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-12-06T01:26:08+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">일어나… 개발해야지</title><author><name>makepin2r</name></author><entry><title type="html">자유로운 커스텀 에디터를 만들어보자 : TipTap 도입기 (Nuxt 3)</title><link href="http://localhost:4000/vue/nuxt-tiptap/" rel="alternate" type="text/html" title="자유로운 커스텀 에디터를 만들어보자 : TipTap 도입기 (Nuxt 3)" /><published>2024-11-22T00:00:00+09:00</published><updated>2024-11-22T00:00:00+09:00</updated><id>http://localhost:4000/vue/nuxt-tiptap</id><content type="html" xml:base="http://localhost:4000/vue/nuxt-tiptap/"><![CDATA[<h2 id="toast-editor-안녕">Toast Editor… 안녕</h2>
+<p>회사에서 커뮤니티 게시판 기능을 개선하는 프로젝트에서, 에디터를 전면 수정하게 되었다.<br />
+기존에는 Toast 에디터를 이용해 정석적인 형태의 UI만 제공하고 있었다.<br />
+(블로그 글쓰기 화면같이 상단에 툴바가 있는 모양이었다.)<br />
+<img src="https://github.com/user-attachments/assets/d977398a-5db9-401f-9581-f723005cb41f" alt="원래는 이렇게 생겼다." /></p>
+
+<p>이번 개선안을 구현하려면 Toast만으로 대응하기 어려운 포인트들이 있었다.</p>
+<ul>
+  <li>타이포그래피를 변경하는 UI가 자유롭게 커스텀이 되어야 함
+    <ul>
+      <li>새로운 UI에서는 별도의 드롭다운에서 제목 레벨, 볼드, 이탤릭 처리 등이 필요했다.</li>
+      <li>Toast는 툴바 내의 요소를 자유롭게 세팅할 수 있으나, 타이포그래피 변경하는 메서드를 내가 만든 UI에 연결하는 방식을 지원하지 않았다.</li>
+    </ul>
+  </li>
+  <li>HTML과 Markdown을 모두 지원하고, 입력 즉시 양식이 적용되어야 함
+    <ul>
+      <li>Toast의 경우 위지윅 모드로 입력할 때는 입력창에 바로 타이포그래피가 적용된 상태로 출력된다. 단 마크다운은 입력 - preview 창이 나뉘어져 있다.</li>
+      <li>이번 기획안에서는 HTML과 마크다운 모두 입력창에서 양식이 적용된 형태로 확인 및 수정이 가능해야 했다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>문제점을 추려 보고 나니, 현재 우리 프로젝트에 맞는 새로운 라이브러리를 찾아야겠다는 결론이 났다.</p>
+
+<h2 id="tiptap을-선택한-이유">TipTap을 선택한 이유</h2>
+<p>최종적으로 선택한 것은 <a href="https://tiptap.dev/product/editor">TipTap</a>이었다.
+<img src="https://github.com/user-attachments/assets/7c145191-3e43-41c0-a0a2-abd603c36e41" alt="TipTap" />
+텍스트 에디터도 headless 라이브러리가 있었다니!</p>
+
+<p>여러 라이브러리를 검토해보고 TipTap을 선택한 이유는 이러했다.</p>
+
+<blockquote>
+  <ol>
+    <li>Nuxt, Next 모두 호환 가능할 것</li>
+    <li>텍스트 편집 기능을 커스텀 가능하게 제공할 것</li>
+    <li>HTML, Markdown을 모두 지원할 것</li>
+    <li>HTML, Markdown 상관 없이 모두 입력창에 즉시 적용된 양식이 보여질 것</li>
+    <li>무료면 좋겠다…</li>
+  </ol>
+</blockquote>
+
+<p>위 5 가지 조건은 Toast에서 아쉬웠던 점과 프로젝트에서 꼭 필요한 기능들을 모아 정리한 것들이다.</p>
+
+<p>일단 우리 회사는 기존 웹서비스를 모바일 앱으로 옮기는 작업도 하고 있다.<br />
+웹서비스는 Nuxt 3, 웹뷰는 Next 14 기반으로 제작되기 때문에 되도록 두 환경 모두 매끄럽게 호환되는 라이브러리를 희망했다.</p>
+
+<p>또한 디자인에 맞추려면 텍스트 편집 기능을 자유롭게 직접 만든 UI에 연결할 수 있어야 했고, 위지윅이든 마크다운이든 입력창에 바로 텍스트 양식이 적용되어야 했다. 기능 별로 위지윅/마크다운 작성이 혼용되어 있기 때문이다.</p>
+
+<p>직접 적용해본 결과, 자유도가 높은 만큼 품도 많이 들긴 한다.<br />
+그래도 웬만한 것들은 구현이 가능해서 만족도가 높다.</p>
+
+<h2 id="nuxt-3에-tiptap-세팅하는-방법-에디터-컴포넌트-만들기">Nuxt 3에 TipTap 세팅하는 방법 (에디터 컴포넌트 만들기)</h2>
+<p><a href="https://tiptap.dev/docs/editor/getting-started/overview">공식 문서</a>를 참고해 Nuxt 3 기반의 프로젝트에 에디터 컴포넌트를 작성했다.</p>
+
+<p>우리 프로젝트에는 입력 기능을 지원해야 하는 곳이 많고, 기능마다 UI 형태가 조금씩  다르다.<br />
+관리가 편하도록 에디터 초기화와 기본적인 기능이 포함된 컴포넌트를 만든 뒤 (이미지 업로드, 타이포그래피 CSS 등), 추후 디자인을 덧씌운 실제 UI 컴포넌트를 그때 그때 만들기로 했다.</p>
+
+<h3 id="라이브러리-설치하기">라이브러리 설치하기</h3>
+<p>먼저 라이브러리를 설치한다. 기본으로 설치해야 하는 패키지는 아래 3가지다.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> @tiptap/vue-3 @tiptap/pm @tiptap/starter-kit
+</code></pre></div></div>
+
+<p>마크다운도 지원해야 하므로 추가로 한 가지를 더 설치했다.
+https://github.com/aguingand/tiptap-markdown</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install </span>tiptap-markdown
+</code></pre></div></div>
+
+<h3 id="컴포넌트-만들기">컴포넌트 만들기</h3>
+<p>패키지를 모두 설치했다면 기본적인 컴포넌트를 만든다.<br />
+(아래 예시 코드의 개발 환경은 Nuxt 3, Vue 3 이다.)</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;template&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"editor-content"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+
+<span class="nt">&lt;script </span><span class="na">lang=</span><span class="s">"ts"</span> <span class="na">setup</span><span class="nt">&gt;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ref</span><span class="p">,</span> <span class="nx">onMounted</span><span class="p">,</span> <span class="nx">onBeforeUnmount</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">vue</span><span class="dl">'</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Editor</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@tiptap/vue-3</span><span class="dl">'</span>
+<span class="k">import</span> <span class="nx">StarterKit</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@tiptap/starter-kit</span><span class="dl">'</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Markdown</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">tiptap-markdown</span><span class="dl">'</span>
+
+<span class="kd">const</span> <span class="nx">props</span> <span class="o">=</span> <span class="nx">defineProps</span><span class="o">&lt;</span><span class="p">{</span>
+  <span class="na">modelValue</span><span class="p">:</span> <span class="nx">string</span>
+<span class="p">}</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="kd">const</span> <span class="nx">emit</span> <span class="o">=</span> <span class="nx">defineEmits</span><span class="o">&lt;</span><span class="p">{</span>
+  <span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="dl">'</span><span class="s1">update:modelValue</span><span class="dl">'</span><span class="p">,</span> <span class="na">value</span><span class="p">:</span> <span class="nx">string</span><span class="p">):</span> <span class="k">void</span>
+<span class="p">}</span><span class="o">&gt;</span><span class="p">()</span>
+
+<span class="kd">const</span> <span class="nx">inputValue</span> <span class="o">=</span> <span class="nf">computed</span><span class="p">({</span>
+  <span class="na">get</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">props</span><span class="p">.</span><span class="nx">modelValue</span><span class="p">,</span>
+  <span class="na">set</span><span class="p">:</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nf">emit</span><span class="p">(</span><span class="dl">'</span><span class="s1">update:modelValue</span><span class="dl">'</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="kd">const</span> <span class="nx">editor</span> <span class="o">=</span> <span class="nx">ref</span><span class="o">&lt;</span><span class="nx">Editor</span> <span class="o">|</span> <span class="kc">null</span><span class="o">&gt;</span><span class="p">(</span><span class="kc">null</span><span class="p">)</span>
+
+<span class="nf">onMounted</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="c1">// 에디터 초기화</span>
+  <span class="nx">editor</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Editor</span><span class="p">({</span>
+    <span class="na">element</span><span class="p">:</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.editor-content</span><span class="dl">'</span><span class="p">)</span> <span class="nx">as</span> <span class="nx">HTMLElement</span><span class="p">,</span>
+    <span class="na">content</span><span class="p">:</span> <span class="nx">inputValue</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span>
+    <span class="na">extensions</span><span class="p">:</span> <span class="p">[</span>
+      <span class="nx">StarterKit</span><span class="p">,</span>
+      <span class="nx">Markdown</span>
+    <span class="p">],</span>
+    <span class="na">onUpdate</span><span class="p">:</span> <span class="p">({</span> <span class="nx">editor</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="c1">// 값 입력 시 수행할 로직</span>
+      <span class="nx">inputValue</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">editor</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">markdown</span><span class="p">.</span><span class="nf">getMarkdown</span><span class="p">()</span>
+      <span class="c1">// HTML 형태로 전달하고 싶다면 editor.getHTML() 을 넘겨주자</span>
+    <span class="p">}</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+
+<span class="nf">onBeforeUnmount</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="c1">// 클린업</span>
+  <span class="nx">editor</span><span class="p">.</span><span class="nx">value</span><span class="p">?.</span><span class="nf">destroy</span><span class="p">()</span>
+<span class="p">})</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;style </span><span class="na">lang=</span><span class="s">"scss"</span> <span class="na">scoped</span><span class="nt">&gt;</span>
+    <span class="c">/* 타이포그래피 커스텀이 필요하다면 추가하기 */</span>
+<span class="nt">&lt;/style&gt;</span>
+</code></pre></div></div>
+
+<p>먼저 컴포넌트가 생성될 때, TipTap 에디터를 초기화해준다.<br />
+<code class="language-plaintext highlighter-rouge">new Editor()</code> 생성자를 이용하고, 추가적인 세팅이 필요하다면 생성자 안에 객체로 넘겨주면 된다. 옵션은 <a href="https://tiptap.dev/docs/editor/getting-started/configure">공식 문서</a>에 잘 설명되어 있다.<br />
+컴포넌트가 종료될 때 클린업을 위하여 생성된 Editor 인스턴스는 변수에 할당해둔다.</p>
+
+<p>먼저 <code class="language-plaintext highlighter-rouge">element</code> 옵션에서 초기화할 HTML 엘리먼트를 지정해준다. 
+<code class="language-plaintext highlighter-rouge">content</code>는 초기 입력값을 지정할 수 있는 옵션이다. 문자열을 그냥 넘겨줘도 되지만, 동적으로 초기값을 지정해줄 경우를 생각해서 나는 props가 연결된 ref 변수의 값을 넣어주었다.</p>
+
+<p>참고로 inputValue라는 computed 변수를 따로 지정해둔 이유는, 입력값을 외부 ref 변수에 연결해두고 싶었기 때문이다.<br />
+따로 연결하지 않고 Editor 내의 최종 값만 나중에 전송하면 업데이트가 덜 일어나겠지만, 그러려면 최종 전송 이벤트를 트리거하는 추가적인 요소가 이 컴포넌트에 붙어야 한다. 외부 ref 값에 연결해두면 저장 버튼같은 부수적인 UI를 따로 두지 않고 순수하게 에디터만 있는 컴포넌트를 만들 수 있다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">extension</code>은 추가하고 싶은 패키지를 등록하는 옵션이다. 나의 경우 StarterKit을 등록해주었다. 기본적인 텍스트 편집 기능이 모두 포함되어있는 패키지다. + 추가로 마크다운 기능을 위해 Markdown 패키지도 포함했다. 
+각각의 익스텐션은 <code class="language-plaintext highlighter-rouge">configure</code> 메서드를 활용해 더 디테일하게 커스텀할 수 있다. 예를 들면, Heading의 레벨을 1~3까지만 사용하고 싶다면 이렇게 수정하면 된다.</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ...</span>
+    <span class="nx">extensions</span><span class="p">:</span> <span class="p">[</span>
+      <span class="nx">StarterKit</span><span class="p">.</span><span class="nf">configure</span><span class="p">({</span>
+        <span class="na">heading</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">levels</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="p">}</span>
+      <span class="p">}),</span>
+      <span class="nx">Markdown</span>
+    <span class="p">],</span>
+<span class="c1">// ...</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">onUpdate</code>는 입력값이 변경될 때 트리거 된다. 입력 시 추가적인 로직 수행이 필요할 때 옵션을 추가하면 된다.</p>
+
+<h2 id="문제-발생">문제 발생…!</h2>
+<p>컴포넌트는 아주 잘 작동했으나, 만들고 나니 문제가 하나 있었다.<br />
+특이하게도 엔터키를 눌렀을 때 아무런 작동도 하지 않더라…!</p>
+
+<p>Shift + Enter를 누르면 <code class="language-plaintext highlighter-rouge">\n</code>이 입력되어 줄바꿈은 되지만, 양식이 적용된 상태에선 마크다운의 단축키가 새롭게 인식되지 않았다.</p>
+
+<p>이를 해결하기 위해 추가적인 수정을 거치게 되었다.<br />
+다음 글에서 엔터키 적용을 위한 트러블슈팅에 대해 적어보려 한다.</p>]]></content><author><name>makepin2r</name></author><category term="vue" /><category term="vue" /><category term="nuxt" /><summary type="html"><![CDATA[Toast Editor… 안녕 회사에서 커뮤니티 게시판 기능을 개선하는 프로젝트에서, 에디터를 전면 수정하게 되었다. 기존에는 Toast 에디터를 이용해 정석적인 형태의 UI만 제공하고 있었다. (블로그 글쓰기 화면같이 상단에 툴바가 있는 모양이었다.)]]></summary></entry><entry><title type="html">poetry에서 파이썬 버전 관련 에러 해결하기 (The current project’s supported Python range…)</title><link href="http://localhost:4000/python/python-poetry-version/" rel="alternate" type="text/html" title="poetry에서 파이썬 버전 관련 에러 해결하기 (The current project’s supported Python range…)" /><published>2024-04-22T00:00:00+09:00</published><updated>2024-04-22T00:00:00+09:00</updated><id>http://localhost:4000/python/python-poetry-version</id><content type="html" xml:base="http://localhost:4000/python/python-poetry-version/"><![CDATA[<p>파이썬을 학습하며 다양한 버전을 사용해야 해서, pyenv와 poetry를 이용하고 있다.<br />
+pyenv는 여러 파이썬 버전을 관리 및 변경해 사용할 수 있도록 도와주는 version management 라이브러리이며,<br />
+poetry는 가상환경 및 파이썬 패키지 매니징 기능을 제공하는 라이브러리다.</p>
+
+<p>dataprep이라는 라이브러리를 사용하던 도중, 분명 요구사항에 맞는 파이썬 버전을 사용했는데도 아래처럼 에러가 발생했다.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The current project<span class="s1">'s supported Python range (&gt;=3.8,&lt;4.0) is not compatible with some of the required packages Python requirement:
+  - dataprep requires Python &gt;=3.8,&lt;3.11, so it will not be satisfied for Python &gt;=3.11,&lt;4.0
+
+Because no versions of dataprep match &gt;0.4.5,&lt;0.5.0
+ and dataprep (0.4.5) requires Python &gt;=3.8,&lt;3.11, dataprep is forbidden.
+So, because eda-dataprep depends on dataprep (^0.4.5), version solving failed.
+</span></code></pre></div></div>
+<p><img src="https://github.com/makepin2r/TIL/assets/39889583/c910d9c8-94e9-4a2b-8716-7a699fa35e20" alt="image" /></p>
+
+<h2 id="the-current-projects-supported-python-range-에러가-발생하는-이유">The current project’s supported Python range… 에러가 발생하는 이유</h2>
+<p>poetry로 가상 환경을 설정한 경우, 패키지 관리용 페이지가 생성되어 있다. (pyproject.toml)<br />
+내 실제 프로젝트 파일을 예시로 들면,</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[tool.poetry]
+name = "eda-dataprep"
+version = "0.1.0"
+description = ""
+authors = ["Seung Hyun Tark &lt;makepin2r@gmail.com&gt;"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+dataprep = "^0.4.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+</code></pre></div></div>
+<p>tool.poetry.dependencies 항목을 보면 python 의존성이 <code class="language-plaintext highlighter-rouge">^3.8</code>로 되어있다.<br />
+(해당 프로젝트를 설정할 때 3.8.19 버전 파이썬을 사용했기 때문에 파일이 이렇게 생성된 것 같다.)</p>
+
+<p>버전 앞에 <code class="language-plaintext highlighter-rouge">^</code>는 <strong>semantic versioning</strong>을 사용한다는 의미이다. (<code class="language-plaintext highlighter-rouge">~</code>을 사용하기도 한다)</p>
+
+<p>시맨틱 버저닝을 사용할 경우 정확히 일치하는 버전을 사용하는 게 아닌, 제한된 버전 내의 최신 버전을 사용하겠다는 의미가 된다.</p>
+
+<p>위의 에러를 읽어보면 시맨틱 버저닝으로 인해 이 프로젝트에서 허용되는 범위가 <code class="language-plaintext highlighter-rouge">&gt;=3.8,&lt;4.0</code>로 해석됨을 알 수 있다.<br />
+하지만 dataprep에서 요구하는 범위는 <code class="language-plaintext highlighter-rouge">&gt;=3.8,&lt;3.11</code>로, <code class="language-plaintext highlighter-rouge">&gt;=3.8,&lt;4.0</code>보다 더 좁은 범위이기 때문에 의존성 에러가 발생한다.</p>
+
+<h3 id="해결-방법">해결 방법</h3>
+<p>이때는 의존성 값을 변경해주어야 한다.<br />
+나의 경우 에러에서 제시된 dataprep을 그대로 입력했고, 에러가 해결되었다.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[tool.poetry.dependencies]
+python = "&gt;=3.8,&lt;3.11"
+dataprep = "^0.4.5"
+</code></pre></div></div>
+
+<hr />
+<h4 id="레퍼런스">레퍼런스</h4>
+<ul>
+  <li><a href="https://stackoverflow.com/questions/73116647/why-cant-i-install-a-python-package-with-the-python-requirement-3-8-3-11-i">stackoverflow</a></li>
+  <li><a href="https://jake-seo-dev.tistory.com/283">시맨틱 버저닝이란?</a></li>
+</ul>]]></content><author><name>makepin2r</name></author><category term="python" /><category term="python" /><summary type="html"><![CDATA[파이썬을 학습하며 다양한 버전을 사용해야 해서, pyenv와 poetry를 이용하고 있다. pyenv는 여러 파이썬 버전을 관리 및 변경해 사용할 수 있도록 도와주는 version management 라이브러리이며, poetry는 가상환경 및 파이썬 패키지 매니징 기능을 제공하는 라이브러리다. dataprep이라는 라이브러리를 사용하던 도중, 분명 요구사항에 맞는 파이썬 버전을 사용했는데도 아래처럼 에러가 발생했다. ```bash The current project’s supported Python range (&gt;=3.8,&lt;4.0) is not compatible with some of the required packages Python requirement: dataprep requires Python &gt;=3.8,&lt;3.11, so it will not be satisfied for Python &gt;=3.11,&lt;4.0]]></summary></entry><entry><title type="html">Window.getComputedStyle이란?</title><link href="http://localhost:4000/js/js-window-getcomputedstyle/" rel="alternate" type="text/html" title="Window.getComputedStyle이란?" /><published>2024-01-02T00:00:00+09:00</published><updated>2024-01-02T00:00:00+09:00</updated><id>http://localhost:4000/js/js-window-getcomputedstyle</id><content type="html" xml:base="http://localhost:4000/js/js-window-getcomputedstyle/"><![CDATA[<h2 id="windowgetcomputedstyle">Window.getComputedStyle()</h2>
+<p>브라우저에 그려진 엘리먼트의 스타일을 객체로 반환해주는 메서드이다.</p>
+<blockquote>
+  <p>Window.getComputedStyle() 메소드는 인자로 전달받은 요소의 모든 CSS 속성값을 담은 객체를 회신합니다. (출처: MDN)
+사용하는 예시는 아래와 같다.</p>
+  <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">p</span> <span class="p">{</span>
+  <span class="nl">font-size</span><span class="p">:</span> <span class="m">2rem</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>  </div>
+  <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">para</span> <span class="o">=</span><span class="kd">let</span> <span class="nx">para</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">compStyles</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nf">getComputedStyle</span><span class="p">(</span><span class="nx">para</span><span class="p">);</span> 
+<span class="nx">compStyles</span><span class="p">.</span><span class="nf">getPropertyValue</span><span class="p">(</span><span class="dl">"</span><span class="s2">font-size</span><span class="dl">"</span><span class="p">);</span> <span class="c1">// 32px</span>
+</code></pre></div>  </div>
+</blockquote>
+
+<h2 id="elementstyle와의-차이점은"><code class="language-plaintext highlighter-rouge">Element.style</code>와의 차이점은?</h2>
+<p>엘리먼트의 스타일 객체를 가져올 수 있는 방법이 한 가지 더 있다.<br />
+바로 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style"><code class="language-plaintext highlighter-rouge">Element.style</code> 객체</a>를 활용하는 것이다.</p>
+
+<p>모두 스타일 정보를 가져오는 객체들이지만,<br />
+크게 두 가지 차이점이 있다.</p>
+<h3 id="가져오는-스타일-정보의-범위가-다르다-외부-선언-vs-인라인">가져오는 스타일 정보의 범위가 다르다. (외부 선언 vs 인라인)</h3>
+<p>getComputedStyle()은 외부 선언된 css까지 전부 적용된 값을 가져온다.<br />
+Element.style은 인라인으로 직접 선언된 속성값만을 가져온다.</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"first-element"</span> <span class="na">style=</span><span class="s">"color: red;"</span><span class="nt">&gt;</span>엘리먼트 1<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"second-element"</span><span class="nt">&gt;</span>엘리먼트 2<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;style&gt;</span>
+  <span class="nf">#second-element</span> <span class="p">{</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="no">green</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="nt">&lt;/style&gt;</span>
+</code></pre></div></div>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">firstElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">getElementbyId</span><span class="p">(</span><span class="dl">'</span><span class="s1">first-element</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">secondElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">getElementbyId</span><span class="p">(</span><span class="dl">'</span><span class="s1">second-element</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// Element.style 예시</span>
+<span class="nx">firstElement</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">color</span><span class="p">;</span> <span class="c1">// "red"</span>
+<span class="nx">secondElement</span><span class="p">.</span><span class="nf">getElementbyId</span><span class="p">(</span><span class="dl">'</span><span class="s1">second-element</span><span class="dl">'</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">color</span><span class="p">;</span> <span class="c1">// "" (인라인 속성으로 정의되지 않았기 때문에)</span>
+
+<span class="c1">// getComputedStyle() 예시</span>
+<span class="nb">window</span><span class="p">.</span><span class="nf">getComputedStyle</span><span class="p">(</span><span class="nx">secondElement</span><span class="p">).</span><span class="nf">getPropertyValue</span><span class="p">(</span><span class="dl">"</span><span class="s2">color</span><span class="dl">"</span><span class="p">);</span> <span class="c1">// "rgb(0, 128, 0)"</span>
+</code></pre></div></div>
+<p>Element.style은 기본적으로 해당 엘리먼트의 ‘style’이라는 속성에 부여된 값을 가져오는 것이다.<br />
+그러므로 속성 그 자체를 통해 정의하지 않은 값들은 참조가 불가능하다.<br />
+getComputedStyle()은 모든 CSS 적용이 끝난 최종 상태를 기준으로 값을 가져올 수 있는 메서드이므로, 외부 선언된 CSS도 참조가 가능하다.</p>
+
+<h3 id="읽기-전용-vs-새로운-스타일-설정-가능">읽기 전용 vs 새로운 스타일 설정 가능</h3>
+<p>getComputedStyle()이 반환하는 객체는 기본적으로 read-only이다.<br />
+즉 getComputedStyle()을 통해 가져온 객체의 값을 변경하게 스타일을 수정할 수 없다.<br />
+반면 Element.style은 객체에 새로운 값을 할당할 수 있기 때문에, 스타일 수정 또한 가능하다.<br />
+—</p>
+<h4 id="레퍼런스">레퍼런스</h4>
+<ul>
+  <li><a href="https://helloinyong.tistory.com/284">https://helloinyong.tistory.com/284</a></li>
+  <li><a href="https://developer.mozilla.org/ko/docs/Web/API/Window/getComputedStyle">MDN Window.getComputedStyle()</a></li>
+</ul>]]></content><author><name>makepin2r</name></author><category term="js" /><category term="JS" /><summary type="html"><![CDATA[Window.getComputedStyle() 브라우저에 그려진 엘리먼트의 스타일을 객체로 반환해주는 메서드이다. Window.getComputedStyle() 메소드는 인자로 전달받은 요소의 모든 CSS 속성값을 담은 객체를 회신합니다. (출처: MDN) 사용하는 예시는 아래와 같다. p { font-size: 2rem; } let para =let para = document.querySelector("p"); let compStyles = window.getComputedStyle(para); compStyles.getPropertyValue("font-size"); // 32px]]></summary></entry><entry><title type="html">Vue UI 컴포넌트: 상하 스크롤을 따라다니는 플로팅 컴포넌트 만들기 (추가 라이브러리 X)</title><link href="http://localhost:4000/vue/vue-floating-component/" rel="alternate" type="text/html" title="Vue UI 컴포넌트: 상하 스크롤을 따라다니는 플로팅 컴포넌트 만들기 (추가 라이브러리 X)" /><published>2024-01-02T00:00:00+09:00</published><updated>2024-01-02T00:00:00+09:00</updated><id>http://localhost:4000/vue/vue-floating-component</id><content type="html" xml:base="http://localhost:4000/vue/vue-floating-component/"><![CDATA[<h2 id="플로팅-컴포넌트-만들기">플로팅 컴포넌트 만들기</h2>
+<p>상하 스크롤을 쫓아오는 플로팅 메뉴를 만들어야 했다.<br />
+해당 기능을 또 쓸 일이 있을 것 같아, 플로팅 기능만 유틸처럼 떼놓은 형태의 컴포넌트를 만들기로 결정했다.<br />
+현재는 위치를 디테일하게 정하는 기능 없이, 일단 스크롤을 따라다니는 기능만 만들어본다.<br />
+(Vue 3, Nuxt 3 환경을 기준으로 만들었다.)
+<img src="https://github.com/makepin2r/makepin2r.github.io/assets/39889583/3edbcd29-784e-4ba4-8756-50604608942c" alt="floating" /></p>
+
+<h2 id="기본-구조">기본 구조</h2>
+<h3 id="template-구조">template 구조</h3>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;template&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">ref=</span><span class="s">"floatingItem"</span> <span class="na">class=</span><span class="s">"floating"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;slot</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+</code></pre></div></div>
+<p>template의 구조는 이렇다.<br />
+플로팅 기능을 쓰고 싶은 엘리먼트가 있다면, 이 컴포넌트로 감싸서 기능을 덧붙일 수 있도록 했다.</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- 플로팅 사용 예시 --&gt;</span>
+<span class="nt">&lt;template&gt;</span>
+    <span class="nt">&lt;CommonFloatingItme&gt;</span>
+        <span class="nt">&lt;div&gt;</span>스크롤 따라오세요!<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/CommonFloatingItme&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+</code></pre></div></div>
+<p>직접 사용할 경우 이런 모양이 될 것이다.</p>
+<h2 id="로직-만들기">로직 만들기</h2>
+<p>플로팅 컴포넌트의 로직은 크게 3단계로 나뉜다.</p>
+<ol>
+  <li>현재 스크롤이 움직인 수치를 구한다.</li>
+  <li>스크롤이 움직인 수치를 기반으로 요소의 위치를 변경한다.</li>
+  <li>위치를 변경하는 이벤트를 이벤트 리스너의 ‘scroll’ 이벤트에 등록한다.
+하나씩 살펴보자.
+    <h3 id="플로팅-요소-준비">플로팅 요소 준비</h3>
+    <p>나는 css의 <code class="language-plaintext highlighter-rouge">position: absolute</code>를 이용해 로직을 작성했기 때문에,<br />
+제대로 작동하려면 움직일 엘리먼트에 position: absolute와 top 속성이 적용되어있어야 한다.<br />
+아래의 css를 적어주자.</p>
+    <div class="language-scss highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.floating</span> <span class="p">{</span>
+ <span class="nl">position</span><span class="p">:</span> <span class="nb">absolute</span><span class="p">;</span>
+ <span class="nl">top</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+    <h3 id="스크롤이-움직인-수치-구하기">스크롤이 움직인 수치 구하기</h3>
+    <p>스크롤이 움직인 수치를 구하는 방법은 매우 간단하다. <br />
+window.scrollY가 상하 스크롤이 움직인 수치이므로, 이것만 구해오면 된다.
+scrollY가 없을 경우를 대비해 document.documentElement.scrollTop을 추가로 적어주었다..</p>
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">getScrollTop</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">scrollY</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">scrollTop</span><span class="p">;</span>
+</code></pre></div>    </div>
+    <p>하지만 나의 경우 이대로만 작성하면 에러가 발생했다.<br />
+Nuxt 3와 같은 SSR 환경에서는 페이지가 구성될 때 window 및 document 객체가 존재하지 않을 경우가 있어 500 에러가 발생한다.<br />
+나와 같이 SSR 환경에서 컴포넌트를 작성하는 경우 아래처럼 예외 처리 코드를 추가해주자.</p>
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">getScrollTop</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="k">typeof</span> <span class="nb">window</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">undefined</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">return</span> <span class="nb">window</span><span class="p">.</span><span class="nx">scrollY</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">scrollTop</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="mi">0</span> <span class="c1">// window가 정의되지 않은 경우</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+    <p>window 객체가 정의되었는지 확인할 때 흔히 쓰이는 <code class="language-plaintext highlighter-rouge">typeof window !== 'undefined'</code> 구문을 추가해주었다.</p>
+  </li>
+</ol>
+
+<h3 id="스크롤한-만큼-요소를-움직이는-함수-만들기-기본">스크롤한 만큼 요소를 움직이는 함수 만들기 (기본)</h3>
+<p>스크롤된 수치만큼 요소를 이동하는 로직을 만들어보자.<br />
+먼저 기본 로직은 아래와 같다.</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">floatingItem</span> <span class="o">=</span> <span class="nx">ref</span><span class="o">&lt;</span><span class="nx">HTMLElement</span> <span class="o">|</span> <span class="kc">null</span><span class="o">&gt;</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span> <span class="c1">// 움직일 요소를 ref로 받아오기</span>
+
+<span class="kd">const</span> <span class="nx">handleScroll</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">floatingItem</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">currentTop</span> <span class="o">=</span> <span class="nf">getScrollTop</span><span class="p">();</span> <span class="c1">// 현재 스크롤된 수치 가져오기</span>
+        <span class="c1">// 아이템의 top에 스크롤된 수치를 넣어주기</span>
+        <span class="kd">const</span> <span class="nx">itemTop</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">currentTop</span><span class="p">}</span><span class="s2">px`</span><span class="p">;</span> 
+        <span class="nx">floatingItem</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">top</span> <span class="o">=</span> <span class="nx">itemTop</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>이렇게 하면 스크롤된 만큼 아이템의 위치가 변경된다.</p>
+
+<h3 id="css를-이용해-부드럽게-화면을-따라오는-효과-추가하기">CSS를 이용해 부드럽게 화면을 따라오는 효과 추가하기</h3>
+<p>위 코드까지 작성한다면, 스크롤을 따라 요소의 위치는 잘 이동된다.<br />
+하지만 부드럽게 스크롤을 따라오는 것이 아니라 ‘뚝’ 하고 움직인다.</p>
+
+<p>좀더 매끄러운 효과를 주려면 CSS를 이용해 top 속성에 transition 효과만 부여해주면 된다.<br />
+아래의 CSS를 추가해보자.</p>
+<div class="language-scss highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.floating</span> <span class="p">{</span>
+    <span class="nl">position</span><span class="p">:</span> <span class="nb">absolute</span><span class="p">;</span>
+    <span class="nl">top</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="nl">transition</span><span class="p">:</span> <span class="nb">top</span> <span class="m">0</span><span class="mi">.8s</span> <span class="nf">cubic-bezier</span><span class="p">(</span><span class="m">0</span><span class="mi">.17</span><span class="o">,</span> <span class="m">0</span><span class="mi">.84</span><span class="o">,</span> <span class="m">0</span><span class="mi">.44</span><span class="o">,</span> <span class="m">1</span><span class="p">);</span> <span class="c1">// 추가하기</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>위의 예시에 쓰인 duration이나 cubic-bezier 값은 임의대로 수정해 필요한 형태로 알맞게 사용하면 된다!</p>
+
+<h2 id="완성-코드">완성 코드</h2>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;template&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">ref=</span><span class="s">"floatingItem"</span> <span class="na">class=</span><span class="s">"floating"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;slot</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+
+<span class="nt">&lt;script </span><span class="na">lang=</span><span class="s">"ts"</span> <span class="na">setup</span><span class="nt">&gt;</span>
+<span class="kd">const</span> <span class="nx">floatingItem</span> <span class="o">=</span> <span class="nx">ref</span><span class="o">&lt;</span><span class="nx">HTMLElement</span> <span class="o">|</span> <span class="kc">null</span><span class="o">&gt;</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">getScrollTop</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="k">typeof</span> <span class="nb">window</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">undefined</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">window</span><span class="p">.</span><span class="nx">scrollY</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">scrollTop</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">const</span> <span class="nx">handleScroll</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">floatingItem</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">currentTop</span> <span class="o">=</span> <span class="nf">getScrollTop</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">itemTop</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">currentTop</span><span class="p">}</span><span class="s2">px`</span><span class="p">;</span>
+    <span class="nx">floatingItem</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">top</span> <span class="o">=</span> <span class="nx">itemTop</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">const</span> <span class="nx">debouncedScrollEvent</span> <span class="o">=</span> <span class="nf">debounce</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="nx">handleScroll</span><span class="p">)</span>
+
+<span class="nf">onMounted</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">scroll</span><span class="dl">'</span><span class="p">,</span> <span class="nx">debouncedScrollEvent</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nf">onBeforeUnmount</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nf">removeEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">scroll</span><span class="dl">'</span><span class="p">,</span> <span class="nx">debouncedScrollEvent</span><span class="p">)</span>
+<span class="p">})</span>
+<span class="nt">&lt;/script&gt;</span>
+
+<span class="nt">&lt;style </span><span class="na">lang=</span><span class="s">"scss"</span> <span class="na">scoped</span><span class="nt">&gt;</span>
+<span class="nc">.floating</span> <span class="p">{</span>
+  <span class="nl">position</span><span class="p">:</span> <span class="nb">absolute</span><span class="p">;</span>
+  <span class="nl">top</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="nl">transition</span><span class="p">:</span> <span class="nb">top</span> <span class="m">0.8s</span> <span class="n">cubic-bezier</span><span class="p">(</span><span class="m">0.17</span><span class="p">,</span> <span class="m">0.84</span><span class="p">,</span> <span class="m">0.44</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nt">&lt;/style&gt;</span>
+</code></pre></div></div>
+<p>(참고로 위에서 handleScroll을 감싼 debouncedScrollEvent는 스크롤 이벤트에 디바운싱을 적용하기 위해 기존에 작성된 debounce 유틸로 함수를 감싼 것이다.)</p>]]></content><author><name>makepin2r</name></author><category term="vue" /><category term="vue" /><category term="vue3" /><category term="Javascript" /><category term="UI" /><summary type="html"><![CDATA[플로팅 컴포넌트 만들기 상하 스크롤을 쫓아오는 플로팅 메뉴를 만들어야 했다. 해당 기능을 또 쓸 일이 있을 것 같아, 플로팅 기능만 유틸처럼 떼놓은 형태의 컴포넌트를 만들기로 결정했다. 현재는 위치를 디테일하게 정하는 기능 없이, 일단 스크롤을 따라다니는 기능만 만들어본다. (Vue 3, Nuxt 3 환경을 기준으로 만들었다.)]]></summary></entry><entry><title type="html">맥북 (M2) 카라비너 없이 한영키를 우측 커맨드키로 바꾸기</title><link href="http://localhost:4000/tips/mac-right-command/" rel="alternate" type="text/html" title="맥북 (M2) 카라비너 없이 한영키를 우측 커맨드키로 바꾸기" /><published>2023-12-13T00:00:00+09:00</published><updated>2023-12-13T00:00:00+09:00</updated><id>http://localhost:4000/tips/mac-right-command</id><content type="html" xml:base="http://localhost:4000/tips/mac-right-command/"><![CDATA[<p>이번 맥북 OS를 Sonoma로 업데이트하면서 두 가지의 버그를 경험했다.</p>
+<ul>
+  <li>날짜와 시간이 부정확하게 설정되는 오류</li>
+  <li>기존 외장 프로그램(카라비너)으로 세팅한 키보드 설정 인식이 잘 되지 않는 오류</li>
+</ul>
+
+<p>그중 키보드 인식이 잘 되지 않는 오류가 꽤 불편했다.<br />
+커맨드-옵션 키 순서를 바꾸는 것과 카라비너를 활용한 right command 키를 한영키로 사용하는 설정이 모두 되지 않았기 때문이다.<br />
+(카라비너 자체에서 드라이버 인식이 잘 되지 않고 있다.)</p>
+
+<p>처음에는 Ventura로 다운그레이드를 해볼까도 했지만 이것때문에 포맷을 하는 건 너무 귀찮았다…<br />
+그래서 검색 끝에 아무 프로그램 설치 없이 맥북 내에서 한영키를 우측 커맨드로 바꾸는 방법을 찾아냈다!</p>
+
+<h2 id="추가-프로그램-설치-없이-한영키를-원하는-대로-바꾸기">추가 프로그램 설치 없이 한영키를 원하는 대로 바꾸기</h2>
+<p>한영키를 우측 커맨드 키로 바꾸고 싶다면 크게 아래와 같은 과정을 거치면 된다.</p>
+<ol>
+  <li>우측 커맨드 키를 사용하지 않는 키값으로 맵핑하기 (보통 키보드에 존재하지 않는 f18키를 이용한다).</li>
+  <li>한영키(맥에서는 설정 - 키보드 - 단축키 - 입력 소스의 ‘입력 메뉴에서 다음 소스 선택’) 단축키를 f18로 변경하기</li>
+</ol>
+
+<p>카라비너 없이 위 과정을 실행할 수 있는 방법은 맥 내의 내장 앱 <strong>hidutil</strong>을 사용하는 것이다.<br />
+hidutil는 맥이 기본으로 제공하는 키 맵핑 앱이다.</p>
+
+<h3 id="방법">방법</h3>
+<ol>
+  <li>터미널에서 아래의 명령어를 실행한다.
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hidutil property <span class="nt">--set</span> <span class="s1">'{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc": 0x7000000E7,"HIDKeyboardModifierMappingDst": 0x70000006D}]}'</span><span class="sb">`</span>
+</code></pre></div>    </div>
+    <p>hidutil이 잘 작동하고 있다면 별다른 메시지 없이 적용될 것이다.</p>
+  </li>
+  <li>설정 - 키보드 - 단축키 - 입력 소스에서 <strong>입력 메뉴에서 다음 소스 선택</strong>의 값을 <code class="language-plaintext highlighter-rouge">f18</code>로 변경한다.</li>
+  <li>다시 터미널로 돌아가 아래의 두 명령어를 입력한다.
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ~/Library/LaunchAgents/
+vi com.local.setting.key.remapping.plist
+</code></pre></div>    </div>
+    <p>그러면 터미널의 명령어가 사라지면서 vim 에디터에 진입하게 된다.</p>
+  </li>
+  <li>아래 코드를 붙여넣고 저장한다.
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+ <span class="cp">&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;</span>
+ <span class="nt">&lt;plist</span> <span class="na">version=</span><span class="s">"1.0"</span><span class="nt">&gt;</span>
+ <span class="nt">&lt;dict&gt;</span>
+     <span class="nt">&lt;key&gt;</span>Label<span class="nt">&lt;/key&gt;</span>
+     <span class="nt">&lt;string&gt;</span>com.changing.KeyRemapping<span class="nt">&lt;/string&gt;</span>
+     <span class="nt">&lt;key&gt;</span>ProgramArguments<span class="nt">&lt;/key&gt;</span>
+     <span class="nt">&lt;array&gt;</span>
+         <span class="nt">&lt;string&gt;</span>/usr/bin/hidutil<span class="nt">&lt;/string&gt;</span>
+         <span class="nt">&lt;string&gt;</span>property<span class="nt">&lt;/string&gt;</span>
+         <span class="nt">&lt;string&gt;</span>--set<span class="nt">&lt;/string&gt;</span>
+         <span class="nt">&lt;string&gt;</span>{"UserKeyMapping":[
+         {"HIDKeyboardModifierMappingSrc":0x7000000E7,
+         "HIDKeyboardModifierMappingDst":0x70000006D}
+         ]}<span class="nt">&lt;/string&gt;</span>
+     <span class="nt">&lt;/array&gt;</span>
+     <span class="nt">&lt;key&gt;</span>RunAtLoad<span class="nt">&lt;/key&gt;</span>
+     <span class="nt">&lt;true/&gt;</span>
+ <span class="nt">&lt;/dict&gt;</span>
+ <span class="nt">&lt;/plist&gt;</span>
+</code></pre></div>    </div>
+    <p>붙여넣기는 그냥 <code class="language-plaintext highlighter-rouge">cmd + v</code>를 누르면 된다.<br />
+ vim 에디터에서 저장 후 에디터를 빠져나오는 방법은 <code class="language-plaintext highlighter-rouge">:</code>를 누른 뒤 <code class="language-plaintext highlighter-rouge">wq</code> 입력 후 엔터를 누르면 된다.</p>
+  </li>
+</ol>
+
+<p>이렇게 적용하고 나면 한영키 변경 시 딜레이도 없고, 우측 커맨드 키로 아주 잘 변환되는 것을 확인할 수 있다!</p>
+
+<hr />
+<h4 id="레퍼런스">레퍼런스</h4>
+<ul>
+  <li><a href="https://jintelli.tistory.com/41">https://jintelli.tistory.com/41</a></li>
+</ul>]]></content><author><name>makepin2r</name></author><category term="tips" /><category term="mac" /><summary type="html"><![CDATA[이번 맥북 OS를 Sonoma로 업데이트하면서 두 가지의 버그를 경험했다. 날짜와 시간이 부정확하게 설정되는 오류 기존 외장 프로그램(카라비너)으로 세팅한 키보드 설정 인식이 잘 되지 않는 오류]]></summary></entry><entry><title type="html">Object.values() : 객체 내 값을 배열로 변경하기</title><link href="http://localhost:4000/js/js-object_values/" rel="alternate" type="text/html" title="Object.values() : 객체 내 값을 배열로 변경하기" /><published>2023-12-10T00:00:00+09:00</published><updated>2023-12-10T00:00:00+09:00</updated><id>http://localhost:4000/js/js-object_values</id><content type="html" xml:base="http://localhost:4000/js/js-object_values/"><![CDATA[<h2 id="objectvalues">Object.values()</h2>
+<p><code class="language-plaintext highlighter-rouge">values()</code>는 JS의 내장 객체 Object가 갖는 정적 메서드 중 하나다.<br />
+인자로 열거 가능한(enumarable) 객체를 받으며, 인자로 들어온 객체 내 속성의 값들로 이루어진 배열을 리턴한다.</p>
+
+<p>이때 배열 내 값 순서는 객체의 속성을 for in 구문과 순회할 때와 동일하다.</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 유사 배열 (숫자를 속성으로 사용하는 객체)</span>
+<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">:</span> <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="dl">"</span><span class="s2">b</span><span class="dl">"</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="dl">"</span><span class="s2">c</span><span class="dl">"</span> <span class="p">};</span>
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nf">values</span><span class="p">(</span><span class="nx">obj</span><span class="p">));</span> <span class="c1">// ['a', 'b', 'c']</span>
+</code></pre></div></div>
+<h3 id="주의할-점">주의할 점</h3>
+<ul>
+  <li>내부에 열거 가능하지 않은 속성이 있을 경우 결과 배열에서 제외된다. 또한 심볼형 프로퍼티를 무시한다.
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">my_obj</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span>
+<span class="p">{},</span>
+<span class="p">{</span>
+  <span class="na">getFoo</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">value</span><span class="p">:</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">foo</span><span class="p">;</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">},</span>
+<span class="p">);</span>
+<span class="nx">my_obj</span><span class="p">.</span><span class="nx">foo</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">bar</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nf">values</span><span class="p">(</span><span class="nx">my_obj</span><span class="p">));</span> <span class="c1">// ['bar']</span>
+</code></pre></div>    </div>
+  </li>
+  <li>for-in 구문과 값 배치 순서가 같다. 즉 속성명이 숫자일 경우 숫자가 자동 오름차순 정렬되어 반환된다.
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">an_obj</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">100</span><span class="p">:</span> <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="dl">"</span><span class="s2">b</span><span class="dl">"</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="dl">"</span><span class="s2">c</span><span class="dl">"</span> <span class="p">};</span>
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nf">values</span><span class="p">(</span><span class="nx">an_obj</span><span class="p">));</span> <span class="c1">// ['b', 'c', 'a']</span>
+</code></pre></div>    </div>
+  </li>
+  <li>인자로 객체가 아닌 값을 전달하면, 객체로 강제 변환되어 적용된다.
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nf">values</span><span class="p">(</span><span class="dl">"</span><span class="s2">foo</span><span class="dl">"</span><span class="p">));</span> <span class="c1">// ['f', 'o', 'o']</span>
+</code></pre></div>    </div>
+  </li>
+  <li>배열도 객체이므로, 인자로 실제 배열이 들어올 수 있다.<br />
+배열이 인자로 들어갈 경우 인자 배열과 리턴되는 배열은 똑같은 형태의 값을 지니나, <u>서로 다른 주소값</u>을 가진 복사 배열이 반환된다.
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">myArray</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">유고스타</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">유산슬</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">유라섹</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">유르페우스</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">유DJ뽕디스파뤼</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">유샘</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">닭터유</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">유두래곤</span><span class="dl">'</span><span class="p">];</span>
+
+<span class="kd">const</span> <span class="nx">myValues</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nf">values</span><span class="p">(</span><span class="nx">myArray</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">myValues</span><span class="p">);</span>
+<span class="c1">// (8) ["유고스타", "유산슬", "유라섹", "유르페우스", "유DJ뽕디스파뤼", "유샘", "닭터유", "유두래곤"]</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">myArray</span> <span class="o">===</span> <span class="nx">myValues</span><span class="p">);</span>
+<span class="c1">// false</span>
+</code></pre></div>    </div>
+    <hr />
+    <h4 id="레퍼런스">레퍼런스</h4>
+  </li>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values">MDN Object.values()</a></li>
+  <li><a href="https://ko.javascript.info/keys-values-entries">모던 JavaScript 튜토리얼</a></li>
+  <li><a href="https://bigtop.tistory.com/61">https://bigtop.tistory.com/61</a></li>
+</ul>]]></content><author><name>makepin2r</name></author><category term="js" /><category term="JS" /><category term="문법" /><summary type="html"><![CDATA[Object.values() values()는 JS의 내장 객체 Object가 갖는 정적 메서드 중 하나다. 인자로 열거 가능한(enumarable) 객체를 받으며, 인자로 들어온 객체 내 속성의 값들로 이루어진 배열을 리턴한다. 이때 배열 내 값 순서는 객체의 속성을 for in 구문과 순회할 때와 동일하다. // 유사 배열 (숫자를 속성으로 사용하는 객체) var obj = { 0: "a", 1: "b", 2: "c" }; console.log(Object.values(obj)); // ['a', 'b', 'c'] 주의할 점 내부에 열거 가능하지 않은 속성이 있을 경우 결과 배열에서 제외된다. 또한 심볼형 프로퍼티를 무시한다. var my_obj = Object.create( {}, { getFoo: { value: function () { return this.foo; }, }, }, ); my_obj.foo = "bar"; console.log(Object.values(my_obj)); // ['bar'] for-in 구문과 값 배치 순서가 같다. 즉 속성명이 숫자일 경우 숫자가 자동 오름차순 정렬되어 반환된다. var an_obj = { 100: "a", 2: "b", 7: "c" }; console.log(Object.values(an_obj)); // ['b', 'c', 'a'] 인자로 객체가 아닌 값을 전달하면, 객체로 강제 변환되어 적용된다. console.log(Object.values("foo")); // ['f', 'o', 'o'] 배열도 객체이므로, 인자로 실제 배열이 들어올 수 있다. 배열이 인자로 들어갈 경우 인자 배열과 리턴되는 배열은 똑같은 형태의 값을 지니나, 서로 다른 주소값을 가진 복사 배열이 반환된다. ```javascript const myArray = [‘유고스타’, ‘유산슬’, ‘유라섹’, ‘유르페우스’, ‘유DJ뽕디스파뤼’, ‘유샘’, ‘닭터유’, ‘유두래곤’];]]></summary></entry><entry><title type="html">js의 속성 설명자(PropertyDescriptor)</title><link href="http://localhost:4000/js/js-object-property-descriptor/" rel="alternate" type="text/html" title="js의 속성 설명자(PropertyDescriptor)" /><published>2023-12-10T00:00:00+09:00</published><updated>2023-12-10T00:00:00+09:00</updated><id>http://localhost:4000/js/js-object-property-descriptor</id><content type="html" xml:base="http://localhost:4000/js/js-object-property-descriptor/"><![CDATA[<h2 id="자바스크립트-객체의-속성-설명자-property-descriptor">자바스크립트 객체의 속성 설명자 (property descriptor)</h2>
+
+<h3 id="속성-설명자의-종류">속성 설명자의 종류</h3>
+<p>객체의 속성 설명자는 총 4가지가 있다.<br />
+value를 제외한 나머지 3개의 값은 기본적으로 true가 부여된다.</p>
+<ul>
+  <li>value</li>
+  <li>writable: 해당 속성의 값을 변경할 수 있는지 여부</li>
+  <li>enumerable: 열거 가능한지 여부
+    <ul>
+      <li>일부 반복문의 순회 대상을 결정한다. 예를 들어 <code class="language-plaintext highlighter-rouge">for...in</code> 구문에서는 enumerable한 속성에만 접근 가능하다.</li>
+    </ul>
+  </li>
+  <li>configurable</li>
+</ul>
+
+<hr />
+<h4 id="레퍼런스">레퍼런스</h4>
+<ul>
+  <li><a href="https://developer-talk.tistory.com/277">https://developer-talk.tistory.com/277</a></li>
+</ul>]]></content><author><name>makepin2r</name></author><category term="js" /><category term="JS" /><category term="문법" /><summary type="html"><![CDATA[자바스크립트 객체의 속성 설명자 (property descriptor)]]></summary></entry><entry><title type="html">프로그래머스 접미사인지 확인하기 자바스크립트 알고리즘 풀이</title><link href="http://localhost:4000/algorithm-programmers/181908/" rel="alternate" type="text/html" title="프로그래머스 접미사인지 확인하기 자바스크립트 알고리즘 풀이" /><published>2023-10-23T00:00:00+09:00</published><updated>2023-10-23T00:00:00+09:00</updated><id>http://localhost:4000/algorithm-programmers/181908</id><content type="html" xml:base="http://localhost:4000/algorithm-programmers/181908/"><![CDATA[<h2 id="문제">문제</h2>
+<p><a href="https://school.programmers.co.kr/learn/courses/30/lessons/181908">문제 링크</a><br />
+<img src="https://github.com/makepin2r/TIL/assets/39889583/dbdbf332-4b01-43b7-be88-b638ba900f23" alt="image" /></p>
+
+<h2 id="나의-풀이">나의 풀이</h2>
+<h3 id="아이디어">아이디어</h3>
+<p>만약 is_suffix기 my_string에 포함되어있다면, 부분 문자열이 있는 가장 마지막 인덱스 + is_suffix의 길이가 my_string의 길이와 같을 경우 접미사가 된다.</p>
+<h3 id="코드">코드</h3>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">solution</span><span class="p">(</span><span class="nx">my_string</span><span class="p">,</span> <span class="nx">is_suffix</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">my_string</span><span class="p">.</span><span class="nf">lastIndexOf</span><span class="p">(</span><span class="nx">is_suffix</span><span class="p">)</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span> <span class="p">?</span> 
+        <span class="o">+</span><span class="p">(</span><span class="nx">my_string</span><span class="p">.</span><span class="nf">lastIndexOf</span><span class="p">(</span><span class="nx">is_suffix</span><span class="p">)</span> <span class="o">+</span> <span class="nx">is_suffix</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="nx">my_string</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> 
+        <span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="다른-사람-풀이">다른 사람 풀이</h2>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">solution</span><span class="p">(</span><span class="nx">my_string</span><span class="p">,</span> <span class="nx">is_suffix</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">my_string</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="nx">my_string</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="nx">is_suffix</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="o">===</span> <span class="nx">is_suffix</span> <span class="p">?</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>my_string을 is_suffix만큼 잘라서 비교한 풀이.<br />
+훨씬 간결하고 가독성이 좋은 코드같다.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">solution</span> <span class="o">=</span> <span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">suff</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">str</span><span class="p">.</span><span class="nf">endsWith</span><span class="p">(</span><span class="nx">suff</span><span class="p">)</span> <span class="p">?</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">0</span>
+</code></pre></div></div>
+<p><a href="https://makepin2r.github.io/algorithm-programmers/181906/">접두사인지 확인하기</a> 문제에서 <code class="language-plaintext highlighter-rouge">startsWith</code> 메서드를 처음 봤었는데, <code class="language-plaintext highlighter-rouge">endsWith</code> 함수도 있었다…</p>
+
+<h2 id="알게-된-것">알게 된 것</h2>
+<h3 id="stringprototypeendswith">String.prototype.endsWith()</h3>
+<p>어떤 문자열이 특정 문자열로 끝나는지 여부를 Boolean 값으로 반환하는 메서드.</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">str</span><span class="p">.</span><span class="nf">endsWith</span><span class="p">(</span><span class="nx">searchString</span><span class="p">[,</span> <span class="nx">length</span><span class="p">])</span>
+</code></pre></div></div>
+<p>총 2개의 인자를 받는다.</p>
+<ul>
+  <li>searchString : 문자열 내에서 찾아야 할 타겟 문자열</li>
+  <li>length : 생략 가능. (생략시 기본값은 문자열 전체 길이) 탐색을 진행할 문자열의 길이값. 즉 탐색을 진행할 문자열 내의 범위가 된다. length는 문자열 전체 길이 내여야 한다.</li>
+</ul>
+
+<hr />
+<h4 id="레퍼런스">레퍼런스</h4>
+<ul>
+  <li><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith">MDN String.prototype.endsWith()</a></li>
+</ul>]]></content><author><name>makepin2r</name></author><category term="algorithm-programmers" /><category term="algorithm" /><category term="JS" /><category term="programmers" /><summary type="html"><![CDATA[문제 문제 링크]]></summary></entry><entry><title type="html">프로그래머스 배열에서 문자열 대소문자 변환하기 자바스크립트 알고리즘 풀이</title><link href="http://localhost:4000/algorithm-programmers/181875/" rel="alternate" type="text/html" title="프로그래머스 배열에서 문자열 대소문자 변환하기 자바스크립트 알고리즘 풀이" /><published>2023-10-23T00:00:00+09:00</published><updated>2023-10-23T00:00:00+09:00</updated><id>http://localhost:4000/algorithm-programmers/181875</id><content type="html" xml:base="http://localhost:4000/algorithm-programmers/181875/"><![CDATA[<h2 id="문제">문제</h2>
+<p><a href="https://school.programmers.co.kr/learn/courses/30/lessons/181875">문제 링크</a><br />
+<img src="https://github.com/makepin2r/TIL/assets/39889583/b015706d-115b-419a-8ee2-9695860c66de" alt="image" /></p>
+
+<h2 id="나의-풀이">나의 풀이</h2>
+<h3 id="코드">코드</h3>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">solution</span><span class="p">(</span><span class="nx">strArr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">strArr</span><span class="p">.</span><span class="nf">map</span><span class="p">((</span><span class="nx">v</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span> <span class="p">?</span> <span class="nx">v</span><span class="p">.</span><span class="nf">toLowerCase</span><span class="p">()</span> <span class="p">:</span> <span class="nx">v</span><span class="p">.</span><span class="nf">toUpperCase</span><span class="p">());</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="다른-사람-풀이">다른 사람 풀이</h2>
+<p>대부분 풀이가 유사하여 생략.</p>]]></content><author><name>makepin2r</name></author><category term="algorithm-programmers" /><category term="algorithm" /><category term="JS" /><category term="programmers" /><summary type="html"><![CDATA[문제 문제 링크]]></summary></entry><entry><title type="html">프로그래머스 공백으로 구분하기 1 자바스크립트 알고리즘 풀이</title><link href="http://localhost:4000/algorithm-programmers/181869/" rel="alternate" type="text/html" title="프로그래머스 공백으로 구분하기 1 자바스크립트 알고리즘 풀이" /><published>2023-10-23T00:00:00+09:00</published><updated>2023-10-23T00:00:00+09:00</updated><id>http://localhost:4000/algorithm-programmers/181869</id><content type="html" xml:base="http://localhost:4000/algorithm-programmers/181869/"><![CDATA[<h2 id="문제">문제</h2>
+<p><a href="https://school.programmers.co.kr/learn/courses/30/lessons/181869">문제 링크</a><br />
+<img src="https://github.com/makepin2r/TIL/assets/39889583/d848ade9-caf4-4805-922a-3933b12cd1c2" alt="image" /></p>
+
+<h2 id="나의-풀이">나의 풀이</h2>
+<h3 id="코드">코드</h3>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">solution</span><span class="p">(</span><span class="nx">my_string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">my_string</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="dl">"</span><span class="s2"> </span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="다른-사람-풀이">다른 사람 풀이</h2>
+<p>대부분 풀이가 유사하여 생략.</p>]]></content><author><name>makepin2r</name></author><category term="algorithm-programmers" /><category term="algorithm" /><category term="JS" /><category term="programmers" /><summary type="html"><![CDATA[문제 문제 링크]]></summary></entry></feed>
