@@ -1,6 +1,7 @@
 import React from "react";
 import { getPostDetail, getPostPaths, parsePostAbstract } from "@/libs/post";
 import PostBody from "@/app/components/postDetail/PostBody";
+import PostHeader from "@/app/components/postDetail/PostHeader";
 
 interface PageParams {
   category: string;
@@ -22,7 +23,12 @@ const page = async (props: { params: Promise<PageParams> }) => {
   const { category, slug } = params;
   const post = await getPostDetail(category, slug);
 
-  return <PostBody post={post} />;
+  return (
+    <section className="prose w-full mx-auto mb-16">
+      <PostHeader post={post} />
+      <PostBody post={post} />
+    </section>
+  );
 };
 
 export default page;

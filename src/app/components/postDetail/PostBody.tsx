@@ -13,26 +13,24 @@ interface PostBodyProps {
 
 const PostBody: React.FC<PostBodyProps> = ({ post }) => {
   return (
-    <div className="prose w-full mx-auto">
-      <MDXRemote
-        components={MdxComponents}
-        source={post.content}
-        options={{
-          mdxOptions: {
-            remarkPlugins: [remarkGfm, remarkBreaks],
-            rehypePlugins: [
-              [
-                rehypePrettyCode,
-                {
-                  theme: "github-dark",
-                },
-              ],
-              rehypeSlug,
+    <MDXRemote
+      components={MdxComponents}
+      source={post.content}
+      options={{
+        mdxOptions: {
+          remarkPlugins: [remarkGfm, remarkBreaks],
+          rehypePlugins: [
+            [
+              rehypePrettyCode,
+              {
+                theme: "github-dark",
+              },
             ],
-          },
-        }}
-      />
-    </div>
+            rehypeSlug,
+          ],
+        },
+      }}
+    />
   );
 };
 

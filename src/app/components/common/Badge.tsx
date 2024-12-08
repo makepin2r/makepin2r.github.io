@@ -13,6 +13,7 @@ const Badge: React.FC<BadgeProps> = ({ type = "primary", children }) => {
   prose-caption-12-medium 
   box-border 
   leading-none 
+  cursor-default
   ${
     type === "primary"
       ? "bg-primary-500 text-white"
