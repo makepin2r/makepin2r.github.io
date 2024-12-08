@@ -5,6 +5,7 @@ import remarkBreaks from "remark-breaks";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import { PostDetail } from "@/config/types";
+import { MdxComponents } from "../mdx/MdxComponents";
 
 interface PostBodyProps {
   post: PostDetail;
@@ -14,6 +15,7 @@ const PostBody: React.FC<PostBodyProps> = ({ post }) => {
   return (
     <div className="prose w-full mx-auto">
       <MDXRemote
+        components={MdxComponents}
         source={post.content}
         options={{
           mdxOptions: {
