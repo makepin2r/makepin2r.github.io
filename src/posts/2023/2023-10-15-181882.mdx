@@ -1,25 +1,31 @@
 ---
 title: "프로그래머스 조건에 맞게 수열 변환하기 1 자바스크립트 알고리즘 풀이"
-last_modified_at: 2023-10-15
+date: 2023-10-15
 categories:
-    - algorithm-programmers
+  - algorithm-programmers
 tags:
-    - algorithm
-    - JS
-    - programmers
+  - algorithm
+  - JS
+  - programmers
 ---
 
 ## 문제
+
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181882)  
 ![image](https://github.com/makepin2r/TIL/assets/39889583/2949b6a9-2107-4499-8a4c-392b5db36119)
 
 ## 나의 풀이
+
 ### 코드
+
 ```javascript
 function solution(arr) {
-    return arr.map(v => v >= 50 ? (v % 2 === 0 ? v / 2 : v) : (v % 2 === 1 ? v * 2 : v));
+  return arr.map(v =>
+    v >= 50 ? (v % 2 === 0 ? v / 2 : v) : v % 2 === 1 ? v * 2 : v,
+  );
 }
 ```
 
 ## 다른 사람 풀이
+
 대부분 풀이가 유사하여 생략.

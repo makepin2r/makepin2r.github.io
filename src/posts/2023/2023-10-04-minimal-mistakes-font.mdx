@@ -1,11 +1,11 @@
 ---
 title: "minimal-mistakes 커스터마이징 : 폰트 변경하기"
-last_modified_at: 2023-10-04
+date: 2023-10-04
 categories:
-    - Github Blogs
+  - Github Blogs
 tags:
-    - minimal-mistakes
-    - blog
+  - minimal-mistakes
+  - blog
 ---
 
 ## 웹폰트 이용해 폰트를 변경하자
@@ -39,15 +39,20 @@ search: false
 
 // 추가할 코드
 @font-face {
-    font-family: "Pretendard";
-    font-weight: 400;
-    font-style: normal;
-    src: url("https://cdn.jsdelivr.net/gh/webfontworld/pretendard/Pretendard-Regular.eot");
-    src: url("https://cdn.jsdelivr.net/gh/webfontworld/pretendard/Pretendard-Regular.eot?#iefix") format("embedded-opentype"),
-        url("https://cdn.jsdelivr.net/gh/webfontworld/pretendard/Pretendard-Regular.woff2") format("woff2"),
-        url("https://cdn.jsdelivr.net/gh/webfontworld/pretendard/Pretendard-Regular.woff") format("woff"), url("https://cdn.jsdelivr.net/gh/webfontworld/pretendard/Pretendard-Regular.ttf")
-            format("truetype");
-    font-display: swap;
+  font-family: "Pretendard";
+  font-weight: 400;
+  font-style: normal;
+  src: url("https://cdn.jsdelivr.net/gh/webfontworld/pretendard/Pretendard-Regular.eot");
+  src:
+    url("https://cdn.jsdelivr.net/gh/webfontworld/pretendard/Pretendard-Regular.eot?#iefix")
+      format("embedded-opentype"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/pretendard/Pretendard-Regular.woff2")
+      format("woff2"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/pretendard/Pretendard-Regular.woff")
+      format("woff"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/pretendard/Pretendard-Regular.ttf")
+      format("truetype");
+  font-display: swap;
 }
 ```
 
@@ -60,6 +65,14 @@ search: false
 
 ```scss
 $custom-font: "Pretendard"; // font-face에 font-family로 지정된 이름을 넣어준다.
-$sans-serif: $custom-font, -apple-system, BlinkMacSystemFont, "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", Arial,
-    sans-serif !default;
+$sans-serif:
+  $custom-font,
+  -apple-system,
+  BlinkMacSystemFont,
+  "Roboto",
+  "Segoe UI",
+  "Helvetica Neue",
+  "Lucida Grande",
+  Arial,
+  sans-serif !default;
 ```

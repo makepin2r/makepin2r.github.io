@@ -1,25 +1,31 @@
 ---
 title: "프로그래머스 배열에서 문자열 대소문자 변환하기 자바스크립트 알고리즘 풀이"
-last_modified_at: 2023-10-23
+date: 2023-10-23
 categories:
-    - algorithm-programmers
+  - algorithm-programmers
 tags:
-    - algorithm
-    - JS
-    - programmers
+  - algorithm
+  - JS
+  - programmers
 ---
 
 ## 문제
+
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181875)  
 ![image](https://github.com/makepin2r/TIL/assets/39889583/b015706d-115b-419a-8ee2-9695860c66de)
 
 ## 나의 풀이
+
 ### 코드
+
 ```javascript
 function solution(strArr) {
-    return strArr.map((v, i) => i % 2 === 0 ? v.toLowerCase() : v.toUpperCase());
+  return strArr.map((v, i) =>
+    i % 2 === 0 ? v.toLowerCase() : v.toUpperCase(),
+  );
 }
 ```
 
 ## 다른 사람 풀이
+
 대부분 풀이가 유사하여 생략.

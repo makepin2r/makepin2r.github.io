@@ -64,7 +64,7 @@ export const getPostList = async (category?: string): Promise<Post[]> => {
   const postList = await Promise.all(
     postPaths.map(postPath => parsePost(postPath)),
   );
-  return postList;
+  return sortPostList(postList);
 };
 
 // post 상세 페이지 내용 조회

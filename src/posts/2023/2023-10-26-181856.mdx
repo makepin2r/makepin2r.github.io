@@ -1,33 +1,37 @@
 ---
 title: "프로그래머스 배열 비교하기 자바스크립트 알고리즘 풀이"
-last_modified_at: 2023-10-26
+date: 2023-10-26
 categories:
-    - algorithm-programmers
+  - algorithm-programmers
 tags:
-    - algorithm
-    - JS
-    - programmers
+  - algorithm
+  - JS
+  - programmers
 ---
 
 ## 문제
+
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181856)  
 ![image](https://github.com/makepin2r/TIL/assets/39889583/52df0258-3f73-4604-9bec-db2143ca7be5)
 
 ## 나의 풀이
+
 ### 코드
+
 ```javascript
 function solution(arr1, arr2) {
-    if(arr1.length > arr2.length){
-        return 1;
-    } else if(arr1.length < arr2.length){
-        return -1;      
-    } else {
-        const sum1 = arr1.reduce((total, v) => total + v, 0);
-        const sum2 = arr2.reduce((total, v) => total + v, 0);
-        return sum1 === sum2 ? 0 : sum1 > sum2 ? 1 : -1;
-    }
+  if (arr1.length > arr2.length) {
+    return 1;
+  } else if (arr1.length < arr2.length) {
+    return -1;
+  } else {
+    const sum1 = arr1.reduce((total, v) => total + v, 0);
+    const sum2 = arr2.reduce((total, v) => total + v, 0);
+    return sum1 === sum2 ? 0 : sum1 > sum2 ? 1 : -1;
+  }
 }
 ```
 
 ## 다른 사람 풀이
+
 대부분 풀이가 유사하여 생략.

@@ -1,28 +1,34 @@
 ---
 title: "프로그래머스 정수 찾기 자바스크립트 알고리즘 풀이"
-last_modified_at: 2023-10-16
+date: 2023-10-16
 categories:
-    - algorithm-programmers
+  - algorithm-programmers
 tags:
-    - algorithm
-    - JS
-    - programmers
+  - algorithm
+  - JS
+  - programmers
 ---
 
 ## 문제
+
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181840)  
 ![image](https://github.com/makepin2r/TIL/assets/39889583/9e1524d3-7fc4-4102-80b7-5c227050dddd)
 
 ## 나의 풀이
+
 ### 아이디어
-오늘 풀었던 [공배수](https://makepin2r.github.io/algorithm-programmers/181936/)와 비슷한 방식을 사용했다.   
+
+오늘 풀었던 [공배수](https://makepin2r.github.io/algorithm-programmers/181936/)와 비슷한 방식을 사용했다.  
 배열 내에 해당 원소가 있는지 판별하는 `includes` 메서드를 활용해 리턴된 불리언 값에 대해 숫자 형변환을 한다.
+
 ### 코드
+
 ```javascript
 function solution(num_list, n) {
-    return num_list.includes(n) >> 0;
+  return num_list.includes(n) >> 0;
 }
 ```
 
 ## 다른 사람 풀이
-대부분 풀이가 유사하여 생략.  
+
+대부분 풀이가 유사하여 생략.

@@ -1,33 +1,36 @@
 ---
 title: "자유로운 커스텀 에디터를 만들어보자 : TipTap 도입기 (Nuxt 3)"
-last_modified_at: 2024-11-22
+date: 2024-11-22
 categories:
-    - vue
+  - vue
 tags:
-    - vue
-    - nuxt
+  - vue
+  - nuxt
 ---
 
 ## Toast Editor... 안녕
+
 회사에서 커뮤니티 게시판 기능을 개선하는 프로젝트에서, 에디터를 전면 수정하게 되었다.  
 기존에는 Toast 에디터를 이용해 정석적인 형태의 UI만 제공하고 있었다.  
 (블로그 글쓰기 화면같이 상단에 툴바가 있는 모양이었다.)  
 ![원래는 이렇게 생겼다.](https://github.com/user-attachments/assets/d977398a-5db9-401f-9581-f723005cb41f)
 
 이번 개선안을 구현하려면 Toast만으로 대응하기 어려운 포인트들이 있었다.
+
 - 타이포그래피를 변경하는 UI가 자유롭게 커스텀이 되어야 함
   - 새로운 UI에서는 별도의 드롭다운에서 제목 레벨, 볼드, 이탤릭 처리 등이 필요했다.
-  - Toast는 툴바 내의 요소를 자유롭게 세팅할 수 있으나, 타이포그래피 변경하는 메서드를 내가 만든 UI에 연결하는 방식을 지원하지 않았다. 
+  - Toast는 툴바 내의 요소를 자유롭게 세팅할 수 있으나, 타이포그래피 변경하는 메서드를 내가 만든 UI에 연결하는 방식을 지원하지 않았다.
 - HTML과 Markdown을 모두 지원하고, 입력 즉시 양식이 적용되어야 함
   - Toast의 경우 위지윅 모드로 입력할 때는 입력창에 바로 타이포그래피가 적용된 상태로 출력된다. 단 마크다운은 입력 - preview 창이 나뉘어져 있다.
   - 이번 기획안에서는 HTML과 마크다운 모두 입력창에서 양식이 적용된 형태로 확인 및 수정이 가능해야 했다.
-  
+
 문제점을 추려 보고 나니, 현재 우리 프로젝트에 맞는 새로운 라이브러리를 찾아야겠다는 결론이 났다.
 
 ## TipTap을 선택한 이유
+
 최종적으로 선택한 것은 [TipTap](https://tiptap.dev/product/editor)이었다.
 ![TipTap](https://github.com/user-attachments/assets/7c145191-3e43-41c0-a0a2-abd603c36e41)
-텍스트 에디터도 headless 라이브러리가 있었다니!  
+텍스트 에디터도 headless 라이브러리가 있었다니!
 
 여러 라이브러리를 검토해보고 TipTap을 선택한 이유는 이러했다.
 
@@ -37,101 +40,105 @@ tags:
 > 4. HTML, Markdown 상관 없이 모두 입력창에 즉시 적용된 양식이 보여질 것
 > 5. 무료면 좋겠다...
 
-위 5 가지 조건은 Toast에서 아쉬웠던 점과 프로젝트에서 꼭 필요한 기능들을 모아 정리한 것들이다.  
-  
+위 5 가지 조건은 Toast에서 아쉬웠던 점과 프로젝트에서 꼭 필요한 기능들을 모아 정리한 것들이다.
+
 일단 우리 회사는 기존 웹서비스를 모바일 앱으로 옮기는 작업도 하고 있다.  
-웹서비스는 Nuxt 3, 웹뷰는 Next 14 기반으로 제작되기 때문에 되도록 두 환경 모두 매끄럽게 호환되는 라이브러리를 희망했다.  
-  
-또한 디자인에 맞추려면 텍스트 편집 기능을 자유롭게 직접 만든 UI에 연결할 수 있어야 했고, 위지윅이든 마크다운이든 입력창에 바로 텍스트 양식이 적용되어야 했다. 기능 별로 위지윅/마크다운 작성이 혼용되어 있기 때문이다.  
+웹서비스는 Nuxt 3, 웹뷰는 Next 14 기반으로 제작되기 때문에 되도록 두 환경 모두 매끄럽게 호환되는 라이브러리를 희망했다.
+
+또한 디자인에 맞추려면 텍스트 편집 기능을 자유롭게 직접 만든 UI에 연결할 수 있어야 했고, 위지윅이든 마크다운이든 입력창에 바로 텍스트 양식이 적용되어야 했다. 기능 별로 위지윅/마크다운 작성이 혼용되어 있기 때문이다.
 
 직접 적용해본 결과, 자유도가 높은 만큼 품도 많이 들긴 한다.  
 그래도 웬만한 것들은 구현이 가능해서 만족도가 높다.
 
 ## Nuxt 3에 TipTap 세팅하는 방법 (에디터 컴포넌트 만들기)
-[공식 문서](https://tiptap.dev/docs/editor/getting-started/overview)를 참고해 Nuxt 3 기반의 프로젝트에 에디터 컴포넌트를 작성했다.  
 
-우리 프로젝트에는 입력 기능을 지원해야 하는 곳이 많고, 기능마다 UI 형태가 조금씩  다르다.  
-관리가 편하도록 에디터 초기화와 기본적인 기능이 포함된 컴포넌트를 만든 뒤 (이미지 업로드, 타이포그래피 CSS 등), 추후 디자인을 덧씌운 실제 UI 컴포넌트를 그때 그때 만들기로 했다. 
-  
+[공식 문서](https://tiptap.dev/docs/editor/getting-started/overview)를 참고해 Nuxt 3 기반의 프로젝트에 에디터 컴포넌트를 작성했다.
+
+우리 프로젝트에는 입력 기능을 지원해야 하는 곳이 많고, 기능마다 UI 형태가 조금씩 다르다.  
+관리가 편하도록 에디터 초기화와 기본적인 기능이 포함된 컴포넌트를 만든 뒤 (이미지 업로드, 타이포그래피 CSS 등), 추후 디자인을 덧씌운 실제 UI 컴포넌트를 그때 그때 만들기로 했다.
+
 ### 라이브러리 설치하기
-먼저 라이브러리를 설치한다. 기본으로 설치해야 하는 패키지는 아래 3가지다.  
+
+먼저 라이브러리를 설치한다. 기본으로 설치해야 하는 패키지는 아래 3가지다.
+
 ```bash
 npm install @tiptap/vue-3 @tiptap/pm @tiptap/starter-kit
 ```
-  
+
 마크다운도 지원해야 하므로 추가로 한 가지를 더 설치했다.
 https://github.com/aguingand/tiptap-markdown
+
 ```bash
 npm install tiptap-markdown
 ```
 
 ### 컴포넌트 만들기
+
 패키지를 모두 설치했다면 기본적인 컴포넌트를 만든다.  
-(아래 예시 코드의 개발 환경은 Nuxt 3, Vue 3 이다.)  
+(아래 예시 코드의 개발 환경은 Nuxt 3, Vue 3 이다.)
+
 ```html
 <template>
-    <div class="editor-content" />
+  <div class="editor-content" />
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { Editor } from '@tiptap/vue-3'
-import StarterKit from '@tiptap/starter-kit'
-import { Markdown } from 'tiptap-markdown'
+  import { ref, onMounted, onBeforeUnmount } from "vue";
+  import { Editor } from "@tiptap/vue-3";
+  import StarterKit from "@tiptap/starter-kit";
+  import { Markdown } from "tiptap-markdown";
 
-const props = defineProps<{
-  modelValue: string
-}>()
-const emit = defineEmits<{
-  (event: 'update:modelValue', value: string): void
-}>()
+  const props = defineProps<{
+    modelValue: string;
+  }>();
+  const emit = defineEmits<{
+    (event: "update:modelValue", value: string): void;
+  }>();
 
-const inputValue = computed({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
-})
+  const inputValue = computed({
+    get: () => props.modelValue,
+    set: value => emit("update:modelValue", value),
+  });
 
-const editor = ref<Editor | null>(null)
+  const editor = ref<Editor | null>(null);
 
-onMounted(() => {
-  // 에디터 초기화
-  editor.value = new Editor({
-    element: document.querySelector('.editor-content') as HTMLElement,
-    content: inputValue.value,
-    extensions: [
-      StarterKit,
-      Markdown
-    ],
-    onUpdate: ({ editor }) => {
-      // 값 입력 시 수행할 로직
-      inputValue.value = editor.storage.markdown.getMarkdown()
-      // HTML 형태로 전달하고 싶다면 editor.getHTML() 을 넘겨주자
-    }
-  })
-})
+  onMounted(() => {
+    // 에디터 초기화
+    editor.value = new Editor({
+      element: document.querySelector(".editor-content") as HTMLElement,
+      content: inputValue.value,
+      extensions: [StarterKit, Markdown],
+      onUpdate: ({ editor }) => {
+        // 값 입력 시 수행할 로직
+        inputValue.value = editor.storage.markdown.getMarkdown();
+        // HTML 형태로 전달하고 싶다면 editor.getHTML() 을 넘겨주자
+      },
+    });
+  });
 
-onBeforeUnmount(() => {
-  // 클린업
-  editor.value?.destroy()
-})
+  onBeforeUnmount(() => {
+    // 클린업
+    editor.value?.destroy();
+  });
 </script>
 <style lang="scss" scoped>
-    /* 타이포그래피 커스텀이 필요하다면 추가하기 */
+  /* 타이포그래피 커스텀이 필요하다면 추가하기 */
 </style>
 ```
 
 먼저 컴포넌트가 생성될 때, TipTap 에디터를 초기화해준다.  
 `new Editor()` 생성자를 이용하고, 추가적인 세팅이 필요하다면 생성자 안에 객체로 넘겨주면 된다. 옵션은 [공식 문서](https://tiptap.dev/docs/editor/getting-started/configure)에 잘 설명되어 있다.  
 컴포넌트가 종료될 때 클린업을 위하여 생성된 Editor 인스턴스는 변수에 할당해둔다.
-  
-먼저 `element` 옵션에서 초기화할 HTML 엘리먼트를 지정해준다. 
-`content`는 초기 입력값을 지정할 수 있는 옵션이다. 문자열을 그냥 넘겨줘도 되지만, 동적으로 초기값을 지정해줄 경우를 생각해서 나는 props가 연결된 ref 변수의 값을 넣어주었다.   
-  
+
+먼저 `element` 옵션에서 초기화할 HTML 엘리먼트를 지정해준다.
+`content`는 초기 입력값을 지정할 수 있는 옵션이다. 문자열을 그냥 넘겨줘도 되지만, 동적으로 초기값을 지정해줄 경우를 생각해서 나는 props가 연결된 ref 변수의 값을 넣어주었다.
+
 참고로 inputValue라는 computed 변수를 따로 지정해둔 이유는, 입력값을 외부 ref 변수에 연결해두고 싶었기 때문이다.  
-따로 연결하지 않고 Editor 내의 최종 값만 나중에 전송하면 업데이트가 덜 일어나겠지만, 그러려면 최종 전송 이벤트를 트리거하는 추가적인 요소가 이 컴포넌트에 붙어야 한다. 외부 ref 값에 연결해두면 저장 버튼같은 부수적인 UI를 따로 두지 않고 순수하게 에디터만 있는 컴포넌트를 만들 수 있다.  
-  
-`extension`은 추가하고 싶은 패키지를 등록하는 옵션이다. 나의 경우 StarterKit을 등록해주었다. 기본적인 텍스트 편집 기능이 모두 포함되어있는 패키지다. + 추가로 마크다운 기능을 위해 Markdown 패키지도 포함했다. 
+따로 연결하지 않고 Editor 내의 최종 값만 나중에 전송하면 업데이트가 덜 일어나겠지만, 그러려면 최종 전송 이벤트를 트리거하는 추가적인 요소가 이 컴포넌트에 붙어야 한다. 외부 ref 값에 연결해두면 저장 버튼같은 부수적인 UI를 따로 두지 않고 순수하게 에디터만 있는 컴포넌트를 만들 수 있다.
+
+`extension`은 추가하고 싶은 패키지를 등록하는 옵션이다. 나의 경우 StarterKit을 등록해주었다. 기본적인 텍스트 편집 기능이 모두 포함되어있는 패키지다. + 추가로 마크다운 기능을 위해 Markdown 패키지도 포함했다.
 각각의 익스텐션은 `configure` 메서드를 활용해 더 디테일하게 커스텀할 수 있다. 예를 들면, Heading의 레벨을 1~3까지만 사용하고 싶다면 이렇게 수정하면 된다.
+
 ```javascript
 // ...
     extensions: [
@@ -143,15 +150,16 @@ onBeforeUnmount(() => {
       Markdown
     ],
 // ...
-``` 
-  
-`onUpdate`는 입력값이 변경될 때 트리거 된다. 입력 시 추가적인 로직 수행이 필요할 때 옵션을 추가하면 된다.  
-  
+```
+
+`onUpdate`는 입력값이 변경될 때 트리거 된다. 입력 시 추가적인 로직 수행이 필요할 때 옵션을 추가하면 된다.
+
 ## 문제 발생...!
+
 컴포넌트는 아주 잘 작동했으나, 만들고 나니 문제가 하나 있었다.  
-특이하게도 엔터키를 눌렀을 때 아무런 작동도 하지 않더라...!  
-  
-Shift + Enter를 누르면 `\n`이 입력되어 줄바꿈은 되지만, 양식이 적용된 상태에선 마크다운의 단축키가 새롭게 인식되지 않았다. 
-  
+특이하게도 엔터키를 눌렀을 때 아무런 작동도 하지 않더라...!
+
+Shift + Enter를 누르면 `\n`이 입력되어 줄바꿈은 되지만, 양식이 적용된 상태에선 마크다운의 단축키가 새롭게 인식되지 않았다.
+
 이를 해결하기 위해 추가적인 수정을 거치게 되었다.  
-다음 글에서 엔터키 적용을 위한 트러블슈팅에 대해 적어보려 한다.  
+다음 글에서 엔터키 적용을 위한 트러블슈팅에 대해 적어보려 한다.

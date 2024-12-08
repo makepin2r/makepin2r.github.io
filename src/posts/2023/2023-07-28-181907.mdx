@@ -1,12 +1,12 @@
 ---
 title: "프로그래머스 문자열의 앞의 n글자 자바스크립트 알고리즘 풀이"
-last_modified_at: 2023-07-28
+date: 2023-07-28
 categories:
-    - algorithm-programmers
+  - algorithm-programmers
 tags:
-    - algorithm
-    - JS
-    - programmers
+  - algorithm
+  - JS
+  - programmers
 ---
 
 ## 문제
@@ -16,13 +16,13 @@ tags:
 
 ## 아이디어
 
--   n이 주어지므로, 특정 인덱스로부터 n번째만큼 자르는 메서드인 `slice`를 사용한다.
+- n이 주어지므로, 특정 인덱스로부터 n번째만큼 자르는 메서드인 `slice`를 사용한다.
 
 ## 내 코드
 
 ```javascript
 function solution(my_string, n) {
-    return my_string.slice(0, n);
+  return my_string.slice(0, n);
 }
 ```
 
@@ -30,7 +30,7 @@ function solution(my_string, n) {
 
 ```javascript
 function solution(my_string, n) {
-    return my_string.substring(0, n);
+  return my_string.substring(0, n);
 }
 ```
 
@@ -38,11 +38,11 @@ function solution(my_string, n) {
 
 ```javascript
 function solution(m, n) {
-    var answer = "";
-    for (let i = 0; i < n; i++) {
-        answer += m[i];
-    }
-    return answer;
+  var answer = "";
+  for (let i = 0; i < n; i++) {
+    answer += m[i];
+  }
+  return answer;
 }
 ```
 
