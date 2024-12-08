@@ -5,6 +5,7 @@ import remarkBreaks from "remark-breaks";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import { PostDetail } from "@/config/types";
+import { MdxComponents } from "../mdx/MdxComponents";
 
 interface PostBodyProps {
   post: PostDetail;
@@ -12,25 +13,24 @@ interface PostBodyProps {
 
 const PostBody: React.FC<PostBodyProps> = ({ post }) => {
   return (
-    <div className="prose w-full mx-auto">
-      <MDXRemote
-        source={post.content}
-        options={{
-          mdxOptions: {
-            remarkPlugins: [remarkGfm, remarkBreaks],
-            rehypePlugins: [
-              [
-                rehypePrettyCode,
-                {
-                  theme: "github-dark",
-                },
-              ],
-              rehypeSlug,
+    <MDXRemote
+      components={MdxComponents}
+      source={post.content}
+      options={{
+        mdxOptions: {
+          remarkPlugins: [remarkGfm, remarkBreaks],
+          rehypePlugins: [
+            [
+              rehypePrettyCode,
+              {
+                theme: "github-dark",
+              },
             ],
-          },
-        }}
-      />
-    </div>
+            rehypeSlug,
+          ],
+        },
+      }}
+    />
   );
 };
 
