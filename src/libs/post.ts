@@ -41,7 +41,7 @@ const parsePostDetail = async (postPath: string) => {
 };
 
 export const getCategoryPublicName = (dirPath: string) => {
-  dirPath
+  return dirPath
     .split("-")
     .map(token => token[0].toUpperCase() + token.slice(1, token.length))
     .join(" ");
@@ -68,13 +68,10 @@ export const getPostList = async (category?: string): Promise<Post[]> => {
 };
 
 // post 상세 페이지 내용 조회
-export const getPostDetail = async (
-  category: string,
-  slug: string,
-): Promise<PostDetail> => {
+export const getPostDetail = async (category: string, slug: string) => {
   const filePath = `${POSTS_PATH}/${category}/${slug}.mdx`;
   const detail = await parsePost(filePath);
-  return detail;
+  return detail as PostDetail;
 };
 
 // 게시글 파싱
