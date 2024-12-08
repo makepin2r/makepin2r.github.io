@@ -1,12 +1,12 @@
 ---
 title: "프로그래머스 머쓱이보다 키 큰 사람 자바스크립트 알고리즘 풀이"
-last_modified_at: 2023-10-06
+date: 2023-10-06
 categories:
-    - algorithm-programmers
+  - algorithm-programmers
 tags:
-    - algorithm
-    - JS
-    - programmers
+  - algorithm
+  - JS
+  - programmers
 ---
 
 ## 문제
@@ -29,7 +29,7 @@ tags:
 
 ```javascript
 function solution(array, height) {
-    return array.filter((v) => v > height).length;
+  return array.filter(v => v > height).length;
 }
 ```
 
@@ -37,10 +37,10 @@ function solution(array, height) {
 
 ```javascript
 function solution(array, height) {
-    let result = 0;
-    array.map((arr) => height < arr && result++);
+  let result = 0;
+  array.map(arr => height < arr && result++);
 
-    return result;
+  return result;
 }
 ```
 

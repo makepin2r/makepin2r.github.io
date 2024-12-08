@@ -1,27 +1,33 @@
 ---
 title: "프로그래머스 할 일 목록 자바스크립트 알고리즘 풀이"
-last_modified_at: 2023-10-26
+date: 2023-10-26
 categories:
-    - algorithm-programmers
+  - algorithm-programmers
 tags:
-    - algorithm
-    - JS
-    - programmers
+  - algorithm
+  - JS
+  - programmers
 ---
 
 ## 문제
+
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181885)  
 ![image](https://github.com/makepin2r/TIL/assets/39889583/281f8602-be89-4f06-86a1-25d0570c1376)
 
 ## 나의 풀이
+
 ### 아이디어
+
 filter 메서드를 이용해서 같은 인덱스에 있는 finished 배열의 값이 false인 원소만 리턴한다.
+
 ### 코드
+
 ```javascript
 function solution(todo_list, finished) {
-    return todo_list.filter((_, i) => !finished[i]);
+  return todo_list.filter((_, i) => !finished[i]);
 }
 ```
 
 ## 다른 사람 풀이
+
 대부분 풀이가 유사하여 생략.

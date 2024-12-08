@@ -1,12 +1,12 @@
 ---
 title: "프로그래머스 삼각형의 완성조건 (1) 자바스크립트 알고리즘 풀이"
-last_modified_at: 2023-10-06
+date: 2023-10-06
 categories:
-    - algorithm-programmers
+  - algorithm-programmers
 tags:
-    - algorithm
-    - JS
-    - programmers
+  - algorithm
+  - JS
+  - programmers
 ---
 
 ## 문제
@@ -18,15 +18,15 @@ tags:
 
 ### 아이디어
 
--   `sort`로 sides를 내림차순 정렬하여 가장 큰 변이 0번 인덱스에 오게 한다.
--   나머지 변들의 길이 합보다 0번 인덱스 값보다 작은지를 확인하여 참이면 1 거짓이면 2를 반환한다.
+- `sort`로 sides를 내림차순 정렬하여 가장 큰 변이 0번 인덱스에 오게 한다.
+- 나머지 변들의 길이 합보다 0번 인덱스 값보다 작은지를 확인하여 참이면 1 거짓이면 2를 반환한다.
 
 ### 코드
 
 ```javascript
 function solution(sides) {
-    sides.sort((a, b) => b - a);
-    return sides.at(0) < sides.at(1) + sides.at(2) ? 1 : 2;
+  sides.sort((a, b) => b - a);
+  return sides.at(0) < sides.at(1) + sides.at(2) ? 1 : 2;
 }
 ```
 
@@ -34,13 +34,13 @@ function solution(sides) {
 
 ```javascript
 function solution(sides) {
-    var answer = 0;
-    const max = Math.max(...sides);
-    const sum = sides.reduce((a, b) => a + b, 0) - max;
+  var answer = 0;
+  const max = Math.max(...sides);
+  const sum = sides.reduce((a, b) => a + b, 0) - max;
 
-    answer = max < sum ? 1 : 2;
+  answer = max < sum ? 1 : 2;
 
-    return answer;
+  return answer;
 }
 ```
 
@@ -49,8 +49,8 @@ function solution(sides) {
 
 ```javascript
 function solution(sides) {
-    const [long, a, b] = sides.sort((a, b) => b - a);
-    return long < a + b ? 1 : 2;
+  const [long, a, b] = sides.sort((a, b) => b - a);
+  return long < a + b ? 1 : 2;
 }
 ```
 

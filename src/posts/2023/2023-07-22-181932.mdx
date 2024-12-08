@@ -1,12 +1,12 @@
 ---
 title: "프로그래머스 코드 처리하기 자바스크립트 알고리즘 풀이"
-last_modified_at: 2023-07-22
+date: 2023-07-22
 categories:
-    - algorithm-programmers
+  - algorithm-programmers
 tags:
-    - algorithm
-    - JS
-    - programmers
+  - algorithm
+  - JS
+  - programmers
 ---
 
 ## 문제
@@ -16,28 +16,28 @@ tags:
 
 ## 아이디어
 
--   mode의 값과 짝수/홀수를 2로 나눴을 때의 나머지값이 같다.
--   그러므로 (인덱스 % 2) 가 mode와 일치하면 해당 인덱스의 값을 더해준다.
+- mode의 값과 짝수/홀수를 2로 나눴을 때의 나머지값이 같다.
+- 그러므로 (인덱스 % 2) 가 mode와 일치하면 해당 인덱스의 값을 더해준다.
 
 ## 내 코드
 
 ```javascript
 function solution(code) {
-    let ret = "";
-    let mode = 0;
+  let ret = "";
+  let mode = 0;
 
-    for (let i = 0; i < code.length; ++i) {
-        if (code[i] === "1") {
-            mode = mode ^ 1; // XOR 연산자로 토글
-            continue; // "1" 문자 자체는 패스
-        }
-        // mode === 0 일 때 짝수 인덱스 문자 추가
-        // mode === 1 일 때 홀수 인덱스 문자 추가
-        // 인덱스의 나머지값과 mode가 일치할 때의 문자만 추가해줌
-        i % 2 === mode && (ret += code[i]);
+  for (let i = 0; i < code.length; ++i) {
+    if (code[i] === "1") {
+      mode = mode ^ 1; // XOR 연산자로 토글
+      continue; // "1" 문자 자체는 패스
     }
+    // mode === 0 일 때 짝수 인덱스 문자 추가
+    // mode === 1 일 때 홀수 인덱스 문자 추가
+    // 인덱스의 나머지값과 mode가 일치할 때의 문자만 추가해줌
+    i % 2 === mode && (ret += code[i]);
+  }
 
-    return ret.length === 0 ? "EMPTY" : ret;
+  return ret.length === 0 ? "EMPTY" : ret;
 }
 ```
 
@@ -45,17 +45,17 @@ function solution(code) {
 
 ```javascript
 function solution(code) {
-    let ret = "";
-    let mode = 0;
-    [...code].forEach((char, i) => {
-        if (char === "1") {
-            mode = Math.abs(mode - 1);
-            return;
-        }
-        ret += i % 2 === mode ? char : "";
-    });
+  let ret = "";
+  let mode = 0;
+  [...code].forEach((char, i) => {
+    if (char === "1") {
+      mode = Math.abs(mode - 1);
+      return;
+    }
+    ret += i % 2 === mode ? char : "";
+  });
 
-    return ret.length === 0 ? "EMPTY" : ret;
+  return ret.length === 0 ? "EMPTY" : ret;
 }
 ```
 

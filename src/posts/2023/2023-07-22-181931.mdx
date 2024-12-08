@@ -1,12 +1,12 @@
 ---
 title: "프로그래머스 등차수열의 특정한 항만 더하기 자바스크립트 알고리즘 풀이"
-last_modified_at: 2023-07-22
+date: 2023-07-22
 categories:
-    - algorithm-programmers
+  - algorithm-programmers
 tags:
-    - algorithm
-    - JS
-    - programmers
+  - algorithm
+  - JS
+  - programmers
 ---
 
 ## 문제
@@ -18,20 +18,20 @@ tags:
 
 등차수열이기 때문에 특정 수식으로 일반화할 수 있을 것 같았다.
 
--   i항에서 계산되는 값은 a + d \* i 이므로,
--   반복문을 돌면서 true일 때는 더해주고 false일 때는 더해주지 않는다.
+- i항에서 계산되는 값은 a + d \* i 이므로,
+- 반복문을 돌면서 true일 때는 더해주고 false일 때는 더해주지 않는다.
 
 ## 내 코드
 
 ```javascript
 function solution(a, d, included) {
-    // 인덱스가 i일 때 i+1항은 a + i + d이므로
-    // true일 때 더해줌
-    let answer = 0;
-    for (let i = 0; i < included.length; ++i) {
-        included[i] && (answer += a + d * i);
-    }
-    return answer;
+  // 인덱스가 i일 때 i+1항은 a + i + d이므로
+  // true일 때 더해줌
+  let answer = 0;
+  for (let i = 0; i < included.length; ++i) {
+    included[i] && (answer += a + d * i);
+  }
+  return answer;
 }
 ```
 
@@ -39,9 +39,9 @@ function solution(a, d, included) {
 
 ```javascript
 function solution(a, d, included) {
-    return included.reduce((acc, flag, i) => {
-        return flag ? acc + a + d * i : acc;
-    }, 0);
+  return included.reduce((acc, flag, i) => {
+    return flag ? acc + a + d * i : acc;
+  }, 0);
 }
 ```
 

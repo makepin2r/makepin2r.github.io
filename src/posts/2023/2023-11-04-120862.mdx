@@ -1,51 +1,58 @@
 ---
 title: "프로그래머스 최댓값 만들기 (2) 자바스크립트 알고리즘 풀이"
-last_modified_at: 2023-11-04
+date: 2023-11-04
 categories:
-    - algorithm-programmers
+  - algorithm-programmers
 tags:
-    - algorithm
-    - JS
-    - programmers
+  - algorithm
+  - JS
+  - programmers
 ---
 
 ## 문제
+
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120862)  
 ![image](https://github.com/makepin2r/TIL/assets/39889583/ac18552a-87f6-4387-bb88-176dcda73fba)
 
 ## 나의 풀이
+
 ### 아이디어
+
 음수와 양수를 각각 다른 배열에 저장해 정렬하고, 음수에서 가장 작은 값들의 곱 혹은 양수에서 가장 큰 값들의 곱 중 더 큰 값을 리턴한다.  
 만일 원소가 두 개밖에 없을 경우 그냥 두 값을 곱하고, 부호가 같은 값이 1개 이하인 경우도 예외처리 하였다. (다른 부호들의 값을 리턴하는 것으로)
+
 ### 코드 (실패)
+
 ```javascript
 function solution(numbers) {
-    // case 1. 서로 부호가 다른 원소 두개만 있는 경우 => 두 원소 곱을 리턴
-    if(numbers.length === 2) return numbers[0] * numbers[1];
-    
-    // case 2. 원소 값 3개 이상일 경우
-    const minus = numbers.filter(v => v < 0).sort((a, b) => a - b)
-    const plus = numbers.filter(v => v > 0).sort((a, b) => b - a)
-    
-    // 두 부호 중 하나가 원소가 하나 이하일 경우 => 다른 부호 값을 리턴
-    if(plus.length <= 1) return minus[0] * minus[1]
-    else if(minus.length <= 1) return plus[0] * plus[1]
-    // 나머지는 두 부호의 최댓값들 중 max값을 리턴
-    else return Math.max(minus[0] * minus[1], plus[0] * plus[1])
+  // case 1. 서로 부호가 다른 원소 두개만 있는 경우 => 두 원소 곱을 리턴
+  if (numbers.length === 2) return numbers[0] * numbers[1];
+
+  // case 2. 원소 값 3개 이상일 경우
+  const minus = numbers.filter(v => v < 0).sort((a, b) => a - b);
+  const plus = numbers.filter(v => v > 0).sort((a, b) => b - a);
+
+  // 두 부호 중 하나가 원소가 하나 이하일 경우 => 다른 부호 값을 리턴
+  if (plus.length <= 1) return minus[0] * minus[1];
+  else if (minus.length <= 1) return plus[0] * plus[1];
+  // 나머지는 두 부호의 최댓값들 중 max값을 리턴
+  else return Math.max(minus[0] * minus[1], plus[0] * plus[1]);
 }
 ```
+
 생각해보니 내 코드는 원소값이 0일 경우를 고려하지 않아 문제가 발생했다.
 
 ## 다른 사람 풀이
+
 ```javascript
 function solution(numbers) {
-    numbers.sort((a, b) => a - b);
+  numbers.sort((a, b) => a - b);
 
-    // 가장 작은 두 수의 곱과 가장 큰 두 수의 곱 중 더 큰 값을 찾기
-    const n = numbers.length;
+  // 가장 작은 두 수의 곱과 가장 큰 두 수의 곱 중 더 큰 값을 찾기
+  const n = numbers.length;
 
-    return Math.max(numbers[0] * numbers[1], numbers[n - 1] * numbers[n - 2]);
+  return Math.max(numbers[0] * numbers[1], numbers[n - 1] * numbers[n - 2]);
 }
-
 ```
-굳이 음수/양수를 따로 정렬하지 않고, 전체 정렬 후 가장 앞의 값과 가장 뒤의 값들의 곱 중 더 큰 값을 반환하면 코드가 간결해진다.  
+
+굳이 음수/양수를 따로 정렬하지 않고, 전체 정렬 후 가장 앞의 값과 가장 뒤의 값들의 곱 중 더 큰 값을 반환하면 코드가 간결해진다.

@@ -37,6 +37,20 @@ export default {
           font: {
             family: ["pretendard", "sans-serif"],
           },
+          css: {
+            h2: {
+              scrollMarginTop: "5rem",
+              fontSize: "1.1rem",
+            },
+            "h3, h4": {
+              scrollMarginTop: "5rem",
+              fontSize: "1.05rem",
+            },
+            p: {
+              marginTop: "2rem",
+              marginBottom: "2rem",
+            },
+          },
         },
         heading1: {
           css: {
