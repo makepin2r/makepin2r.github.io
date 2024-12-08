@@ -17,23 +17,10 @@ export interface Post extends PostMatter {
   categoryPublicName: string;
 }
 
-export interface PostDetail {
-  content: string;
-  readingMinutes: number;
-  dateString: string;
-  title: string;
-  description: string;
-  date: Date;
-  tags: string[];
-  draft?: boolean | undefined;
-  url: string;
-  categoryPath: string;
-  categoryPublicName: void;
-  slug: string;
-}
-
 export interface CategoryDetail {
   dirName: string;
   publicName: string;
   count: number;
 }
+
+export type PostDetail = Post & PostMatter;
