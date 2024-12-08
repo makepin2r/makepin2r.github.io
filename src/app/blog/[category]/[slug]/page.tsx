@@ -20,7 +20,8 @@ export function generateStaticParams(): { params: PageParams }[] {
   return paramList;
 }
 
-const page = async ({ params }: { params: PageParams }) => {
+const page = async (props: { params: Promise<PageParams> }) => {
+  const params = await props.params;
   const { category, slug } = params;
   const post: PostDetail = await getPostDetail(category, slug);
 
