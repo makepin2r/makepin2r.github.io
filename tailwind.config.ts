@@ -38,6 +38,10 @@ export default {
             family: ["pretendard", "sans-serif"],
           },
           css: {
+            h1: {
+              scrollMarginTop: "5rem",
+              fontSize: "1.4rem",
+            },
             h2: {
               scrollMarginTop: "5rem",
               fontSize: "1.1rem",
