@@ -1,5 +1,4 @@
 import React from "react";
-import { PostDetail } from "@/config/types";
 import { getPostDetail, getPostPaths, parsePostAbstract } from "@/libs/post";
 import PostBody from "@/app/components/postDetail/PostBody";
 
@@ -10,20 +9,18 @@ interface PageParams {
 
 export const dynamicParams = false;
 
-export function generateStaticParams(): { params: PageParams }[] {
+export function generateStaticParams() {
   const postPaths: string[] = getPostPaths();
   const paramList = postPaths
     .map(path => parsePostAbstract(path))
-    .map(item => ({
-      params: { category: item.categoryPath, slug: item.slug },
-    }));
+    .map(item => ({ category: item.categoryPath, slug: item.slug }));
   return paramList;
 }
 
 const page = async (props: { params: Promise<PageParams> }) => {
   const params = await props.params;
   const { category, slug } = params;
-  const post: PostDetail = await getPostDetail(category, slug);
+  const post = await getPostDetail(category, slug);
 
   return <PostBody post={post} />;
 };

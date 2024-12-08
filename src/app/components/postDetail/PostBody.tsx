@@ -6,11 +6,11 @@ import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import { PostDetail } from "@/config/types";
 
-type PostBodyProps = {
+interface PostBodyProps {
   post: PostDetail;
-};
+}
 
-const PostBody: React.FC<PostBodyProps> = ({ post }: PostBodyProps) => {
+const PostBody: React.FC<PostBodyProps> = ({ post }) => {
   return (
     <MDXRemote
       source={post.content}
