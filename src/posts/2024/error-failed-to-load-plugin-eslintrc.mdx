@@ -1,0 +1,38 @@
+---
+title: "[에러] Failed to load plugin ... declared in '.eslintrc.json'"
+last_modified_at: 2024-12-08
+categories:
+  - troubleshooting
+tags:
+  - eslint
+  - nuxt
+  - vscode
+---
+
+## 문제
+
+> ESLint: Failed to load plugin '@typescript-eslint' declared in '.eslintrc.json'
+
+### 개발 환경
+
+- 프레임워크: Next.js 15
+- IDE: VSCode
+
+## 원인
+
+eslint 패키지가 v8 버전일 경우 발생하는 에러이다.
+꽤 예전부터 발생하는 이슈 같은데([내가 참고한 레퍼런스](https://github.com/eslint/eslint/issues/15149)도 2021년 글이다), 아직 해결되지 않은 모양.
+
+## 해결
+
+패키지를 다운그레이드했다.
+나의 경우는 7.32.0으로 수정했다.
+
+아래 명령어를 통해 다운그레이드 해도 되고,
+
+```
+npm install eslint@^7.32.0
+yarn upgrade eslint@^7.32.0 # yarn 기준
+```
+
+나는 그냥 package.json에 버전 넘버를 바꾸고 새로 install 진행했다.

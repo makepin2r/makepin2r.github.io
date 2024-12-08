@@ -1,4 +1,4 @@
-import { Post, PostMatter } from "@/config/types";
+import { Post, PostMatter, PostDetail } from "@/config/types";
 import dayjs from "dayjs";
 import fs from "fs";
 import matter from "gray-matter";
@@ -12,7 +12,7 @@ const POSTS_PATH = path.join(process.cwd(), BASE_PATH);
 // 카테고리별 mdx 파일 경로 조회
 export const getPostPaths = (category?: string) => {
   const folder = category || "**";
-  const postPaths: string[] = sync(`${POSTS_PATH}/${folder}/**/*.mdx`);
+  const postPaths: string[] = sync(`${POSTS_PATH}/${folder}/*.mdx`);
   return postPaths;
 };
 
@@ -41,7 +41,7 @@ const parsePostDetail = async (postPath: string) => {
 };
 
 export const getCategoryPublicName = (dirPath: string) => {
-  dirPath
+  return dirPath
     .split("-")
     .map(token => token[0].toUpperCase() + token.slice(1, token.length))
     .join(" ");
@@ -69,9 +69,9 @@ export const getPostList = async (category?: string): Promise<Post[]> => {
 
 // post 상세 페이지 내용 조회
 export const getPostDetail = async (category: string, slug: string) => {
-  const filePath = `${POSTS_PATH}/${category}/${slug}/content.mdx`;
+  const filePath = `${POSTS_PATH}/${category}/${slug}.mdx`;
   const detail = await parsePost(filePath);
-  return detail;
+  return detail as PostDetail;
 };
 
 // 게시글 파싱

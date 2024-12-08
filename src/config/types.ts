@@ -22,3 +22,5 @@ export interface CategoryDetail {
   publicName: string;
   count: number;
 }
+
+export type PostDetail = Post & PostMatter;
