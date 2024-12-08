@@ -34,7 +34,11 @@ const FeedCard: React.FC<FeedCardProps> = ({ thumbnail, feed }) => {
             </p>
           )}
           <p className="flex justify-start gap-1 py-2">
-            {feed.tags?.map(tag => <Badge type="outline">{tag}</Badge>)}
+            {feed.tags?.map((tag, i) => (
+              <Badge type="outline" key={`${feed.title}-${i}`}>
+                {tag}
+              </Badge>
+            ))}
           </p>
           <div className="w-full flex justify-between items-center gap-2">
             <p className="flex justify-start items-center gap-1 prose-body-14-regular text-gray-500">
