@@ -1,4 +1,4 @@
-import { Post, PostMatter } from "@/config/types";
+import { Post, PostMatter, PostDetail } from "@/config/types";
 import dayjs from "dayjs";
 import fs from "fs";
 import matter from "gray-matter";
@@ -68,7 +68,10 @@ export const getPostList = async (category?: string): Promise<Post[]> => {
 };
 
 // post 상세 페이지 내용 조회
-export const getPostDetail = async (category: string, slug: string) => {
+export const getPostDetail = async (
+  category: string,
+  slug: string,
+): Promise<PostDetail> => {
   const filePath = `${POSTS_PATH}/${category}/${slug}.mdx`;
   const detail = await parsePost(filePath);
   return detail;

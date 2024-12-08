@@ -5,8 +5,13 @@ import remarkBreaks from "remark-breaks";
 import remarkA11yEmoji from "@fec/remark-a11y-emoji";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
+import { PostDetail } from "@/config/types";
 
-const PostBody = ({ post }: any) => {
+type PostBodyProps = {
+  post: PostDetail;
+};
+
+const PostBody: React.FC<PostBodyProps> = ({ post }: PostBodyProps) => {
   return (
     <MDXRemote
       source={post.content}
