@@ -12,7 +12,7 @@ const POSTS_PATH = path.join(process.cwd(), BASE_PATH);
 // 카테고리별 mdx 파일 경로 조회
 export const getPostPaths = (category?: string) => {
   const folder = category || "**";
-  const postPaths: string[] = sync(`${POSTS_PATH}/${folder}/**/*.mdx`);
+  const postPaths: string[] = sync(`${POSTS_PATH}/${folder}/*.mdx`);
   return postPaths;
 };
 
