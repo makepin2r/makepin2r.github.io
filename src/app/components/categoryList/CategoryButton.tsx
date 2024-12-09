@@ -13,6 +13,7 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({
 }) => {
   const router = useRouter();
   const BASE_BLOG_URL = "/blog/";
+
   return (
     <li>
       <button
@@ -21,7 +22,10 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({
         }}
       >
         <Badge
-          className="cursor-pointer hover:border-primary-300 transition-all duration-100"
+          className="cursor-pointer 
+          prose-caption-12-bold
+          hover:text-white 
+          hover:bg-primary-300 hover:border-primary-300 transition-all duration-100"
           type={badgeType}
         >
           {category.publicName}
