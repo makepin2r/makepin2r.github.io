@@ -15,7 +15,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
 }) => {
   return (
     <section className="w-full">
-      <ul className="flex flex-wrap justify-start md:justify-center items-start gap-1">
+      <ul className="w-full flex flex-wrap justify-start md:justify-center items-start gap-1">
         <CategoryButton
           category={{
             dirName: "",
