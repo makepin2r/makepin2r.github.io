@@ -36,7 +36,7 @@ const Header = () => {
             );
           })} */}
           <Link
-            href="/"
+            href="/blog"
             className="prose prose-body-14-bold hover:text-primary-500 transition-hover"
           >
             일어나... 개발해야지
