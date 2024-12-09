@@ -1,4 +1,4 @@
-import { Post, PostMatter, PostDetail } from "@/config/types";
+import { Post, PostMatter, PostDetail, CategoryDetail } from "@/config/types";
 import dayjs from "dayjs";
 import fs from "fs";
 import matter from "gray-matter";
@@ -79,4 +79,32 @@ const parsePost = async (postPath: string) => {
   const postAbstract = parsePostAbstract(postPath);
   const postDetail = await parsePostDetail(postPath);
   return { ...postAbstract, ...postDetail };
+};
+
+// 카테고리 정보 리스트 조회
+export const getCategoryDetailList = async () => {
+  const postList = await getPostList();
+  const result: { [key: string]: number } = {};
+  for (const post of postList) {
+    if (result[post.categoryPath]) {
+      result[post.categoryPath] += 1;
+    } else {
+      result[post.categoryPath] = 1;
+    }
+  }
+  const detailList: CategoryDetail[] = Object.entries(result).map(
+    ([category, count]) => ({
+      dirName: category,
+      publicName: getCategoryPublicName(category),
+      count,
+    }),
+  );
+
+  return detailList;
+};
+
+// 전체 게시글 수 조회
+export const getAllPostCount = async () => {
+  const postList = await getPostList();
+  return postList.length;
 };
