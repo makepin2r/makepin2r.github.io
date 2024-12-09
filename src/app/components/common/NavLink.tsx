@@ -17,8 +17,7 @@ const NavLink: React.FC<NavLinkProps> = ({
   activeClassName,
 }) => {
   const pathname = usePathname();
-  const isActive =
-    pathname.endsWith(href) || (href.includes(pathname) && pathname !== "/");
+  const isActive = href === "/" ? href === pathname : pathname.includes(href);
   const classNames = `${className} ${isActive ? activeClassName : ""}`;
 
   return (
