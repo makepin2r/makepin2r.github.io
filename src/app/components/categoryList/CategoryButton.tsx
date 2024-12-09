@@ -13,6 +13,7 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({
 }) => {
   const router = useRouter();
   const BASE_BLOG_URL = "/blog/";
+
   return (
     <li>
       <button
@@ -20,7 +21,13 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({
           router.replace(`${BASE_BLOG_URL}${category.dirName}`);
         }}
       >
-        <Badge type={badgeType}>
+        <Badge
+          className="cursor-pointer 
+          prose-caption-12-bold
+          hover:text-white 
+          hover:bg-primary-300 hover:border-primary-300 transition-all duration-100"
+          type={badgeType}
+        >
           {category.publicName}
           <span className="prose-caption-12-regular ml-1">
             {category.count}
