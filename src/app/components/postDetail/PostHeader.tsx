@@ -9,6 +9,9 @@ interface PostHeaderProps {
 const PostHeader: React.FC<PostHeaderProps> = ({ post }) => {
   return (
     <header className="w-full text-center mt-8 mb-12 flex flex-col gap-4">
+      <p className="prose-body-14-medium text-primary-500 my-0">
+        {post.categoryPublicName}
+      </p>
       <h1 className="mb-0">{post.title}</h1>
       <p className="flex justify-center gap-1 my-0">
         {post.tags?.map((tag, i) => (
