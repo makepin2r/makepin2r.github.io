@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
+import ColorThemeProvider from "./components/layout/theme/ColorThemeProvider";
 import { blogTitle, blogDescription, baseDomain } from "@/config/const";
 
 const pretendard = localFont({
@@ -40,13 +41,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko" suppressHydrationWarning>
       <body className={`${pretendard.className}`}>
-        <Header />
-        <main className="w-full max-w-[960px] mx-auto px-4 py-5 min-h-[calc(100vh-190px)]">
-          {children}
-        </main>
-        <Footer />
+        <ColorThemeProvider>
+          <Header />
+          <main className="w-full max-w-[960px] mx-auto px-4 py-5 min-h-[calc(100vh-190px)]">
+            {children}
+          </main>
+          <Footer />
+        </ColorThemeProvider>
       </body>
     </html>
   );

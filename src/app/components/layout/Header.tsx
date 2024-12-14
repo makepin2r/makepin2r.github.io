@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 // import NavLink from "../common/NavLink";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
+// import ColorThemeSwitch from "./theme/ColorThemeSwitch";
 
 // const menus: { route: string; name: string }[] = [
 // {
@@ -42,9 +43,14 @@ const Header = () => {
             일어나... 개발해야지
           </Link>
         </nav>
-        <div>
+        <div className="flex justify-end items-center gap-4">
+          {/* <ColorThemeSwitch /> */}
           <Link href="https://github.com/makepin2r" target="_blank">
-            <GitHubLogoIcon className="w-5 h-5 text-gray-700 hover:text-primary-500 transition-hover" />
+            <GitHubLogoIcon
+              width={20}
+              height={20}
+              className="text-gray-700 hover:text-primary-500 transition-hover"
+            />
           </Link>
         </div>
       </div>
