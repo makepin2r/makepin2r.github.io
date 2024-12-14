@@ -19,11 +19,9 @@
   --primary-100: #fcd8ce;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: var(--black);
+  --foreground: var(--white);
 }
 
 body {
