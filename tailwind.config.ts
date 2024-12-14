@@ -226,6 +226,9 @@ export default {
         "shadow-sm": {
           "box-shadow": "0 0 11px rgba(33,33,33,.2)",
         },
+        "transition-hover": {
+          transition: "color 500ms",
+        },
       };
       addUtilities(newUtilities, ["responsive", "hover"]);
     },
