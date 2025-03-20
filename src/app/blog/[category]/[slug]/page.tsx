@@ -1,7 +1,7 @@
 import React from "react";
 import { getPostDetail, getPostPaths, parsePostAbstract } from "@/libs/post";
-import PostBody from "@/app/components/postDetail/PostBody";
-import PostHeader from "@/app/components/postDetail/PostHeader";
+import PostBody from "@/components/postDetail/PostBody";
+import PostHeader from "@/components/postDetail/PostHeader";
 
 interface PageParams {
   category: string;

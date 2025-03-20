@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
-import ColorThemeProvider from "./components/layout/theme/ColorThemeProvider";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
+import ColorThemeProvider from "../components/layout/theme/ColorThemeProvider";
 import { blogTitle, blogDescription, baseDomain } from "@/config/const";
 
 const pretendard = localFont({
-  src: "./fonts/PretendardVariable.woff2",
+  src: "../fonts/PretendardVariable.woff2",
   display: "swap",
   weight: "45 920",
   variable: "--font-pretendard",

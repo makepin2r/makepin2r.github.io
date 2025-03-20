@@ -1,5 +1,5 @@
 import { getCategoryList } from "@/libs/post";
-import PostListPage from "@/app/components/postList/PostListPage";
+import PostListPage from "@/components/postList/PostListPage";
 
 interface PageParams {
   category: string;
