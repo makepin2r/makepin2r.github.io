@@ -121,7 +121,7 @@ export const image = async (
 };
 
 export const addTabSpace = (text: string, n = 0) => {
-  const tab = "    ";
+  const tab = "&nbsp;&nbsp;&nbsp;&nbsp;";
   for (let i = 0; i < n; i++) {
     if (text.includes("\n")) {
       const multiLineText = text.split(/(?:^|\n)/).join(`\n${tab}`);
