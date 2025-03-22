@@ -1,7 +1,6 @@
-import React from "react";
-import { getPostDetail, getPostPaths, parsePostAbstract } from "@/libs/post";
+import { getPageMarkdown } from "@/libs/notion/notion";
+// import PostHeader from "@/components/postDetail/PostHeader";
 import PostBody from "@/components/postDetail/PostBody";
-import PostHeader from "@/components/postDetail/PostHeader";
 
 interface PageParams {
   category: string;
@@ -10,23 +9,14 @@ interface PageParams {
 
 export const dynamicParams = false;
 
-export function generateStaticParams() {
-  const postPaths: string[] = getPostPaths();
-  const paramList = postPaths
-    .map(path => parsePostAbstract(path))
-    .map(item => ({ category: item.categoryPath, slug: item.slug }));
-  return paramList;
-}
-
 const page = async (props: { params: Promise<PageParams> }) => {
   const params = await props.params;
-  const { category, slug } = params;
-  const post = await getPostDetail(category, slug);
+  const { slug } = params;
+  const post = await getPageMarkdown(slug);
 
   return (
     <section className="prose w-full mx-auto mb-16">
-      <PostHeader post={post} />
-      <PostBody post={post} />
+      <PostBody post={post.parent} />
     </section>
   );
 };
