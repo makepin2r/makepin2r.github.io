@@ -1,4 +1,3 @@
-import { getCategoryList } from "@/libs/post";
 import PostListPage from "@/components/postList/PostListPage";
 
 interface PageParams {
@@ -6,11 +5,6 @@ interface PageParams {
 }
 
 export const dynamicParams = false;
-export function generateStaticParams() {
-  const categoryList = getCategoryList();
-  const paramList = categoryList.map(category => ({ category }));
-  return paramList;
-}
 
 export default async function Home(props: { params: Promise<PageParams> }) {
   const params = await props.params;
