@@ -1,8 +1,13 @@
-import { getPage } from "@/libs/notion/notion";
-import Renderer from "@/components/postDetail/Renderer";
+import PostList from "@/components/postList/PostList";
+import { NotionDBPost } from "@/config/types";
+import { getDatabase } from "@/libs/notion/notion";
 
 export default async function BlogPage() {
-  const recordMap = await getPage("1bc0f703440580a6bbe7ffc4baaacb2c");
+  const list = await getDatabase();
 
-  return <>{!!recordMap && <Renderer recordMap={recordMap} />}</>;
+  return (
+    <div>
+      <PostList postList={list.results as NotionDBPost[]} />
+    </div>
+  );
 }
