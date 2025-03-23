@@ -1,15 +1,14 @@
 import React from "react";
 import FeedCard from "../layout/FeedCard";
-import { getPostList } from "@/libs/post";
+import { NotionDBPost } from "@/config/types";
 
 interface PostListProps {
-  category?: string;
+  postList: NotionDBPost[];
 }
 
-const PostList: React.FC<PostListProps> = async ({ category }) => {
-  const postList = await getPostList(category);
+const PostList: React.FC<PostListProps> = async ({ postList }) => {
   return (
-    <div className="grid gap-x-4 gap-y-4 grid-cols-1 md:grid-cols-2">
+    <div className="flex flex-col gap-3">
       {postList.map((post, i) => (
         <FeedCard key={i} feed={post} />
       ))}
