@@ -4,7 +4,7 @@ import "./globals.css";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import ColorThemeProvider from "../components/layout/theme/ColorThemeProvider";
-import { blogTitle, blogDescription, baseDomain } from "@/config/const";
+import { BLOG_TITLE, BLOG_DESCRIPTION, BASE_DOMAIN } from "@/config/const";
 
 const pretendard = localFont({
   src: "../fonts/PretendardVariable.woff2",
@@ -14,23 +14,23 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(baseDomain),
-  title: blogTitle,
-  description: blogDescription,
+  metadataBase: new URL(BASE_DOMAIN),
+  title: BLOG_TITLE,
+  description: BLOG_DESCRIPTION,
   icons: {
     icon: { url: "/favicon.ico}" },
   },
   openGraph: {
-    title: blogTitle,
-    description: blogDescription,
-    siteName: blogTitle,
+    title: BLOG_TITLE,
+    description: BLOG_DESCRIPTION,
+    siteName: BLOG_TITLE,
     images: [],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: blogTitle,
-    description: blogDescription,
+    title: BLOG_TITLE,
+    description: BLOG_DESCRIPTION,
     images: [],
   },
 };
