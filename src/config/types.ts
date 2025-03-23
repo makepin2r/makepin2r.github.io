@@ -17,11 +17,11 @@ export interface Post extends PostMatter {
   categoryPublicName: string;
 }
 
-export interface CategoryDetail {
-  dirName: string;
-  publicName: string;
-  count: number;
-}
+// export interface CategoryDetail {
+//   dirName: string;
+//   publicName: string;
+//   count: number;
+// }
 
 export type PostDetail = Post & PostMatter;
 

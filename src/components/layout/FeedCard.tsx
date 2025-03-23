@@ -5,6 +5,7 @@ import Badge from "../common/Badge";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { NotionDBPost } from "@/config/types";
 import fallbackImg from "/public/images/img-fallback.jpg";
+import { BASE_BLOG_URL } from "@/config/const";
 
 interface FeedCardProps {
   feed: NotionDBPost;
@@ -12,7 +13,9 @@ interface FeedCardProps {
 
 const FeedCard: React.FC<FeedCardProps> = ({ feed }) => {
   return (
-    <Link href={`blog/${feed.properties.category.select.name}/${feed.id}`}>
+    <Link
+      href={`${BASE_BLOG_URL}${feed.properties.category.select.name}/${feed.id}`}
+    >
       <article className="w-full rounded-md border border-gray-100 transition-border overflow-hidden hover:border-primary-300 flex gap-1 justify-between flex-col-reverse md:flex-row">
         <div className="flex flex-col justify-start items-start gap-1 p-4 w-full">
           <span className="prose-body-13-medium text-primary-500">

@@ -1,9 +1,9 @@
 import { useRouter } from "next/navigation";
-import { CategoryDetail } from "@/config/types";
 import Badge from "../common/Badge";
+import { BASE_BLOG_URL } from "@/config/const";
 
 interface CategoryButtonProps {
-  category: CategoryDetail;
+  category?: string;
   badgeType: "primary" | "outline";
 }
 
@@ -12,13 +12,14 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({
   badgeType,
 }) => {
   const router = useRouter();
-  const BASE_BLOG_URL = "/blog/";
 
   return (
     <li>
       <button
         onClick={() => {
-          router.replace(`${BASE_BLOG_URL}${category.dirName}`);
+          router.replace(
+            category ? `${BASE_BLOG_URL}${category}` : `${BASE_BLOG_URL}`,
+          );
         }}
       >
         <Badge
@@ -28,10 +29,7 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({
           hover:bg-primary-300 hover:border-primary-300 transition-all duration-100"
           type={badgeType}
         >
-          {category.publicName}
-          <span className="prose-caption-12-regular ml-1">
-            {category.count}
-          </span>
+          {category || "All"}
         </Badge>
       </button>
     </li>
