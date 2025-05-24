@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: BLOG_TITLE,
   description: BLOG_DESCRIPTION,
   icons: {
-    icon: { url: "/favicon.ico}" },
+    icon: { url: "/favicon.ico" },
   },
   openGraph: {
     title: BLOG_TITLE,
