@@ -102,8 +102,8 @@ export const getPostCategories = async (): Promise<string[]> => {
   const res = await getDatabaseInfo();
   console.log("---- getPostCategories ----", res);
   if (res.properties.category) {
-    // NOTE 현재 카테고리는 select 타입
-    // TODO type 처리 필요
+    // NOTE notionhq에 정의된 데이터 타입과 실제 데이터 구조가 다름
+    //@ts-ignore
     const result = res.properties.category.select?.options.map(
       (item: {
         id: string;

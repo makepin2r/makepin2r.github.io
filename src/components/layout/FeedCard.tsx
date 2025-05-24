@@ -26,7 +26,7 @@ const FeedCard: React.FC<FeedCardProps> = ({ feed }) => {
           </h6>
           {feed.properties.description && (
             <p className="prose-body-14-regular line-clamp-1 break-all text-gray-500">
-              {feed.properties.description.rich_text[0].text.content ?? ""}
+              {feed.properties.description.rich_text[0]?.text?.content ?? ""}
             </p>
           )}
           <p className="flex justify-start gap-1 py-2">
@@ -40,18 +40,20 @@ const FeedCard: React.FC<FeedCardProps> = ({ feed }) => {
           <div className="w-full flex justify-between items-center gap-2">
             <p className="flex justify-start items-center gap-1 prose-body-14-regular text-gray-500">
               <CalendarIcon />
-              {feed.properties.published_date.date.start}
+              {feed.properties.published_date.date?.start}
             </p>
           </div>
         </div>
+        {/* TODO cover 대신 글의 첫 번째 이미지를 사용할 수 있는지? */}
         {feed.cover && (
           <div className="w-full md:w-[300px] h-[200px] md:h-auto relative overflow-hidden">
             <Image
               src={
                 feed.cover.type === "file"
                   ? `/api/image-proxy?url=${encodeURIComponent(feed.cover.file.url)}`
-                  : (`/api/image-proxy?url=${encodeURIComponent(feed.cover?.external?.url ?? "")}` ??
-                    fallbackImg)
+                  : feed.cover?.external?.url
+                    ? `/api/image-proxy?url=${encodeURIComponent(feed.cover.external.url)}`
+                    : fallbackImg
               }
               alt={feed.properties.title.title[0].text.content || "new post"}
               fill={true}

@@ -23,7 +23,7 @@ const PostHeader: React.FC<PostHeaderProps> = ({ post }) => {
       <div className="w-full flex justify-center items-center gap-2">
         <p className="flex justify-start items-center gap-1 prose-body-14-regular text-gray-500 my-0">
           <CalendarIcon />
-          {post.dateString}
+          {post.date.toDateString()}
         </p>
         <p className="flex justify-start items-center gap-1 prose-body-14-regular text-gray-500 my-0">
           <TimerIcon />
