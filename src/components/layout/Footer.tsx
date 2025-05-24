@@ -1,9 +1,8 @@
 import React from "react";
 import Link from "next/link";
+import { format } from "date-fns";
 import { GitHubLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
 import { BLOG_USERID, GITHUB_URL, LINKEDIN_URL } from "@/config/const";
-
-const targetDate = new Date();
 
 const Footer = () => {
   return (
@@ -18,7 +17,7 @@ const Footer = () => {
           </Link>
         </div>
         <p className="mt-2 prose-caption-12-regular text-gray-700 text-center">
-          © {targetDate.getFullYear()}. {BLOG_USERID} All rights reserved.
+          © {format(new Date(), "yyyy")}. {BLOG_USERID} All rights reserved.
         </p>
       </div>
     </footer>
