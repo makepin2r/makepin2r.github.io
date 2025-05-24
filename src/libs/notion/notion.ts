@@ -1,3 +1,4 @@
+import { PostMetadata } from "@/config/types";
 import { notion, n2m } from "./notion-api";
 import { MdStringObject } from "@/types";
 import {
@@ -100,7 +101,7 @@ export const getPageMarkdown = async (
  */
 export const getPostCategories = async (): Promise<string[]> => {
   const res = await getDatabaseInfo();
-  console.log("---- getPostCategories ----", res);
+
   if (res.properties.category) {
     // NOTE notionhq에 정의된 데이터 타입과 실제 데이터 구조가 다름
     //@ts-ignore
@@ -116,4 +117,41 @@ export const getPostCategories = async (): Promise<string[]> => {
   } else {
     return [];
   }
+};
+
+/**
+ * 페이지 메타 데이터 가져오기
+ * @param id 글 아이디
+ * @returns PostMetadata
+ */
+export const getPostMetadata = async (id: string): Promise<PostMetadata> => {
+  const res = (await notion.pages.retrieve({
+    page_id: id,
+  })) as PageObjectResponse;
+
+  const title =
+    res.properties.title.type === "title"
+      ? res.properties.title.title[0].plain_text
+      : "";
+
+  const tags =
+    res.properties.tag.type === "multi_select" &&
+    res.properties.tag.multi_select
+      ? res.properties.tag.multi_select.map(tag => tag.name)
+      : [];
+
+  const category =
+    res.properties.category.type === "select" && res.properties.category.select
+      ? res.properties.category?.select?.name
+      : "";
+
+  const result: PostMetadata = {
+    id: res.id,
+    title,
+    created_time: res.created_time,
+    category,
+    tags,
+  };
+
+  return result;
 };

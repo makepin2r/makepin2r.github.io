@@ -27,6 +27,14 @@ export type PostDetail = Post & PostMatter;
 
 // TODO properties type 별로 정의 필요
 
+export type PostMetadata = {
+  id: string;
+  title: string;
+  created_time: string;
+  category: string;
+  tags: string[];
+};
+
 export type NotionDBPost = {
   object: string;
   id: string;
