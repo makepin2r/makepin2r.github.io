@@ -156,7 +156,7 @@ export class NotionToMarkdown {
             mdOutput[pageIdentifier] += formattedContent;
           }
 
-          // mdOutput[pageIdentifier] += "\n";
+          mdOutput[pageIdentifier] += "\n";
         } else if (mdBlocks.type === "callout") {
           // do nothing the callout block is already processed
         } else {
@@ -290,8 +290,6 @@ export class NotionToMarkdown {
    */
   async blockToMarkdown(block: ListBlockChildrenResponseResult) {
     if (typeof block !== "object" || !("type" in block)) return "";
-
-    console.log("block! ", block.paragraph?.rich_text);
 
     let parsedData = "";
     const { type } = block;
@@ -607,6 +605,7 @@ export class NotionToMarkdown {
       if (annotations.italic) text = md.italic(text);
       if (annotations.strikethrough) text = md.strikethrough(text);
       if (annotations.underline) text = md.underline(text);
+      // TODO add color
     }
 
     return leading_space + text + trailing_space;
