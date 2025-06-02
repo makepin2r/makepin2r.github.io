@@ -6,8 +6,11 @@ interface PageParams {
 
 export const dynamicParams = false;
 
-export default async function Home(props: { params: Promise<PageParams> }) {
-  const params = await props.params;
-  const { category } = params;
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<PageParams>;
+}) {
+  const { category } = await params;
   return <PostListPage category={category} />;
 }

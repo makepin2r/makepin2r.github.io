@@ -7,11 +7,12 @@ interface PageParams {
   slug: string;
 }
 
-export const dynamicParams = false;
-
-const page = async (props: { params: Promise<PageParams> }) => {
-  const params = await props.params;
-  const { slug } = params;
+export default async function DetailPage({
+  params,
+}: {
+  params: Promise<PageParams>;
+}) {
+  const { slug } = await params;
   const post = await getPageMarkdown(slug);
   const postHeader = await getPostMetadata(slug);
 
@@ -21,6 +22,4 @@ const page = async (props: { params: Promise<PageParams> }) => {
       <PostBody post={post.parent} />
     </section>
   );
-};
-
-export default page;
+}
