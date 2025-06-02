@@ -2,7 +2,7 @@ import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "./n2m";
 
 export const notion = new Client({
-  auth: process.env.NOTION_API_SECRET,
+  auth: process.env.NEXT_PUBLIC_NOTION_API_SECRET,
   notionVersion: "2022-06-28",
 });
 

@@ -20,7 +20,7 @@ const getDatabase = async (
   category?: string,
 ): Promise<QueryDatabaseResponse> => {
   let query: any = {
-    database_id: process.env.NOTION_DB_ID as string,
+    database_id: process.env.NEXT_PUBLIC_NOTION_DB_ID as string,
     filter: {
       and: [
         {
@@ -48,7 +48,7 @@ const getDatabase = async (
 // 데이터베이스 객체 정보 가져오기
 export const getDatabaseInfo = async (): Promise<GetDatabaseResponse> => {
   return await notion.databases.retrieve({
-    database_id: process.env.NOTION_DB_ID as string,
+    database_id: process.env.NEXT_PUBLIC_NOTION_DB_ID as string,
   });
 };
 
