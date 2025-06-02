@@ -4,8 +4,6 @@ interface PageParams {
   category: string;
 }
 
-export const dynamicParams = false;
-
 export default async function CategoryPage({
   params,
 }: {
